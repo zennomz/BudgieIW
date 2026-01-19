@@ -1,0 +1,79 @@
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: budgie_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./frontend:/var/www/frontend
+      - ./backend:/var/www/backend
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - php
+    networks:
+      - budgie_network
+    restart: unless-stopped
+
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: budgie_php
+    volumes:
+      - ./backend:/var/www/backend
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=budgie_db
+      - DB_USERNAME=budgie_user
+      - DB_PASSWORD=budgie_password
+    depends_on:
+      - mysql
+    networks:
+      - budgie_network
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    container_name: budgie_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: budgie_db
+      MYSQL_USER: budgie_user
+      MYSQL_PASSWORD: budgie_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - budgie_mysql_data:/var/lib/mysql
+    networks:
+      - budgie_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: budgie_phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: budgie_user
+      PMA_PASSWORD: budgie_password
+      PMA_ROOT_PASSWORD: root_password
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - budgie_network
+    restart: unless-stopped
+
+networks:
+  budgie_network:
+    driver: bridge
+
+volumes:
+  budgie_mysql_data:
