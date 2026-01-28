@@ -25,16 +25,13 @@ if [ ! -f ".env" ]; then
     php artisan key:generate
 fi
 
-# 4. Attente de la base de donnÃ©es (pour Ã©viter l'erreur de connexion)
 echo "Attente de MySQL..."
 until ./artisan db:monitor > /dev/null 2>&1; do
   sleep 1
 done
 
-# 5. Migrations
 echo "Lancement des migrations..."
 php artisan migrate --force
 
-# 6. Lancement de PHP
 echo "Environnement pret sur http://localhost:8000"
 exec php-fpm
