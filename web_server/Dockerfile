@@ -20,5 +20,3 @@ RUN useradd -G www-data,root -u 1000 -d /home/dev dev
 RUN mkdir -p /home/dev/.composer && chown -R dev:dev /home/dev && chown -R dev:dev /var/www
 
 USER dev
-
-ENTRYPOINT ["entrypoint.sh"]
