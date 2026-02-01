@@ -1,80 +1,123 @@
-<!doctype html>
-<html lang="fr">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Accueil · Budgie</title>
-@vite(['resources/css/app.css','resources/js/app.js'])
-</head>
-<body>
+@extends('layouts.app')
 
-<nav class="nav">
-  <div class="nav-inner container">
-    <a class="brand" href="{{ route('home') }}">
-      <span class="logo"></span><strong>Budgie</strong>
-    </a>
-    <div class="nav-links">
-      @auth
-        <a href="{{ route('home') }}">Tableau de bord</a>
-        <form method="POST" action="{{ route('logout') }}" style="display:inline">
-          @csrf
-          <button type="submit" class="btn">Déconnexion</button>
-        </form>
-      @else
-        <a class="cta" href="{{ route('login') }}">Se connecter</a>
-      @endauth
-    </div>
-  </div>
-</nav>
+@section('title', 'Accueil - Budgie')
 
-<main class="container">
-<section class="page-hero">
-  <div>
-    <h1 class="hero-title">Ton partenaire financier personnel</h1>
-    <p class="hero-sub">Suivi des comptes, revenus, dépenses et prévisions — sans connecter ta banque. Inspiré par Finary, pensé pour la confidentialité.</p>
-    @auth
-      <p class="tag" style="font-size:16px;margin-bottom:18px">Bienvenue <strong>{{ auth()->user()->prenom ?? '' }} {{ auth()->user()->nom ?? '' }}</strong></p>
-    @endauth
-    <div class="actions">
-      @guest
-        <a class="cta" href="{{ route('register') }}">Créer un compte</a>
-      @endguest
-      <a class="btn" href="{{ route('home') }}">Voir la démo</a>
+@section('content')
+<div class="max-w-6xl mx-auto">
+    <!-- Hero Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-[1.2fr,0.8fr] gap-8 items-center py-12">
+        <div class="space-y-6">
+            <h1 class="text-4xl md:text-5xl font-bold leading-tight">
+                Ton partenaire financier personnel
+            </h1>
+
+            <p class="text-lg text-budgie-muted leading-relaxed">
+                Suivi des comptes, revenus, dépenses et prévisions — sans connecter ta banque.
+                Inspiré par Finary, pensé pour la confidentialité.
+            </p>
+
+            @auth
+                <div class="inline-block px-4 py-2 bg-budgie-accent/10 border border-budgie-accent/20 rounded-lg">
+                    <p class="text-budgie-accent font-medium">
+                        Bienvenue <strong>{{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</strong>
+                    </p>
+                </div>
+            @endauth
+
+            <div class="flex items-center gap-3 flex-wrap pt-2">
+                @guest
+                    <x-button variant="primary" onclick="location.href='{{ route('register') }}'">
+                        Créer un compte
+                    </x-button>
+                @endguest
+
+                <x-button variant="secondary" onclick="location.href='{{ route('home') }}'">
+                    Voir la démo
+                </x-button>
+            </div>
+
+            <div class="flex items-center gap-3 pt-2">
+                <span class="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10">SSL</span>
+                <span class="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10">Sans pub</span>
+                <span class="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10">Export CSV</span>
+            </div>
+        </div>
+
+        <!-- Dashboard Preview -->
+        <x-card>
+            
+            <div class="grid grid-cols-3 gap-3 mb-4">
+                <x-card :padded="false" class="p-4">
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-budgie-muted mb-1.5">Valeur totale</h4>
+                    <p class="">32 450 €</p>
+                    <span class="">+2,3% ce mois</span>
+                </x-card>
+
+                <x-card :padded="false" class="p-4">
+                    <h4 class="">Cash</h4>
+                    <p class="">7 200 €</p>
+                    <span class="">Comptes à vue</span>
+                </x-card>
+
+                <x-card :padded="false" class="p-4">
+                    <h4 class="">Investi</h4>
+                    <p class="">25 250 €</p>
+                    <span class="">CTO, Livrets</span>
+                </x-card>
+            </div>
+
+            <!-- Transactions Prévisions -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <x-card :padded="false" class="p-4">
+                    <h4 class="text-sm font-bold mb-2">Mouvements récents</h4>
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-dashed border-white/5">
+                                <th class="">Date</th>
+                                <th class="">Libellé</th>
+                                <th class="">Montant</th>
+                            </tr>
+                        </thead>
+                        <tbody class="">
+                            <tr>
+                                <td >01/10/2025</td>
+                                <td class="">Salaire</td>
+                                <td class="">
+                                    <span class="">+1 170 €</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">02/10/2025</td>
+                                <td class="">Crédit Moto</td>
+                                <td class="">
+                                    <span class="">-250 €</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="">05/10/2025</td>
+                                <td class="">Alimentation CTO</td>
+                                <td class="">
+                                    <span class="">+50 €</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </x-card>
+
+                <x-card :padded="false" class="p-4">
+                    <h4 class="">Prévision rapide</h4>
+                    <p class="">
+                        Solde estimé au 31/12/2035 : <strong class="text-budgie-text">98 320 €</strong> (net)
+                    </p>
+                    <p class="">
+                        Hypothèses: intérêts mensuels, revenus & dépenses récurrentes.
+                    </p>
+                    <x-button variant="primary" class="w-full text-sm">
+                        Ouvrir les prévisions
+                    </x-button>
+                </x-card>
+            </div>
+        </x-card>
     </div>
-    <div class="row" style="margin-top:16px">
-      <span class="badge">SSL</span>
-      <span class="badge">Sans pub</span>
-      <span class="badge">Export CSV</span>
-    </div>
-  </div>
-  <div class="card padded">
-    <div class="grid grid-3">
-      <div class="kpi card padded"><h3>Valeur totale</h3><p>32 450 €</p><span class="tag">+2,3% ce mois</span></div>
-      <div class="kpi card padded"><h3>Cash</h3><p>7 200 €</p><span class="tag">Comptes à vue</span></div>
-      <div class="kpi card padded"><h3>Investi</h3><p>25 250 €</p><span class="tag">CTO, Livrets</span></div>
-    </div>
-    <div style="margin-top:14px" class="grid grid-2">
-      <div class="card padded">
-        <h3 style="margin:0 0 8px 0">Mouvements récents</h3>
-        <table class="table">
-          <thead><tr><th>Date</th><th>Libellé</th><th>Montant</th></tr></thead>
-          <tbody>
-            <tr><td>01/10/2025</td><td>Salaire</td><td class="status success">+1 170 €</td></tr>
-            <tr><td>02/10/2025</td><td>Crédit Moto</td><td class="status danger">-250 €</td></tr>
-            <tr><td>05/10/2025</td><td>Alimentation CTO</td><td class="status success">+50 €</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="card padded">
-        <h3 style="margin:0 0 8px 0">Prévision rapide</h3>
-        <p class="tag">Solde estimé au 31/12/2035 : <strong>98 320 €</strong> (net)</p>
-        <p class="tag">Hypothèses: intérêts mensuels, revenus & dépenses récurrentes.</p>
-        <a class="btn primary" href="#">Ouvrir les prévisions</a>
-      </div>
-    </div>
-  </div>
-</section>
-</main>
-<footer class="footer container">© Budgie — Application de gestion budgétaire</footer>
-</body>
-</html>
+</div>
+@endsection

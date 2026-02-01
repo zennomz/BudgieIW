@@ -23,12 +23,12 @@ class RegisterRequest extends FormRequest
     {
 
         return [
-            'email' => ['required','email','max:255','unique:users,email'],
+            'email' => ['required','email','max:60','unique:users,email'],
             'password' => ['required','min:8','confirmed'],
-            'nom' => ['nullable','string','max:100'],
-            'prenom' => ['nullable','string','max:100'],
-            'date_naissance' => ['nullable','date'],
-            'numero_telephone' => ['nullable','string','max:30'],
+            'firstname' => ['nullable','string','max:50'],
+            'lastname' => ['nullable','string','max:50'],
+            'date_of_birth' => ['nullable','date'],
+            'numero_phone' => ['nullable','string','max:20'],
         ];
     }
 }
