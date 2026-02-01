@@ -20,13 +20,12 @@ class AuthController extends Controller
         $data = $request->validated();
 
         $user = User::create([
-            'name' => trim(($data['prenom'] ?? '') . ' ' . ($data['nom'] ?? '')),
+            'firstname' => $data['firstname'] ?? null,
+            'lastname' => $data['lastname'] ?? null,
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'nom' => $data['nom'] ?? null,
-            'prenom' => $data['prenom'] ?? null,
-            'date_naissance' => $data['date_naissance'] ?? null,
-            'numero_telephone' => $data['numero_telephone'] ?? null,
+            'date_of_birth' => $data['date_of_birth'] ?? null,
+            'numero_phone' => $data['numero_phone'] ?? null,
         ]);
 
         Auth::login($user);
