@@ -1,7 +1,8 @@
 <?php
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\PrevisionController;
 use Illuminate\Support\Facades\Route;
@@ -20,8 +21,12 @@ Route::post('/connexion', [AuthController::class, 'login'])->name('login.store')
 Route::post('/deconnexion', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/profil', [UserController::class, 'show'])->name('profile.show');
+    Route::put('/profil', [UserController::class, 'update'])->name('profile.update');
+    Route::delete('/profil', [UserController::class, 'destroy'])->name('profile.destroy');
     Route::get('/comptes', [AccountController::class, 'index'])->name('accounts.index');
     Route::post('/comptes', [AccountController::class, 'store'])->name('accounts.store');
+    Route::put('/comptes/{account}', [AccountController::class, 'update'])->name('accounts.update');
     Route::get('/comptes/{account}', [ AccountController::class, 'show'])->name('accounts.show');
     Route::delete('/comptes/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
     Route::get('/comptes/{account}/depenses', [ExpenseController::class, 'index'])->name('expenses.index');
@@ -32,6 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/comptes/{account}/previsions/{prevision}', [PrevisionController::class, 'destroy'])->name('previsions.destroy');
 
     Route::middleware('admin')->group(function () {
+        Route::get('/admin/utilisateurs', [UserController::class, 'indexAll'])->name('users.indexAll');
+        Route::put('/admin/utilisateurs/{user}', [UserController::class, 'updateAdmin'])->name('users.updateAdmin');
         Route::get('/admin/comptes', [AccountController::class, 'indexAll'])->name('accounts.indexAll');
         Route::get('/admin/depenses', [ExpenseController::class, 'indexAll'])->name('expenses.indexAll');
         Route::put('/admin/depenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
