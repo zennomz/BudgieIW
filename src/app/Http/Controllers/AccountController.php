@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Expense;
+use App\Models\Income;
 use Illuminate\Http\Request;
 
 class AccountController extends Controller
@@ -24,7 +26,20 @@ class AccountController extends Controller
             return response()->json(['error' => 'Accès refusé.'], 401);
         }
         $accounts = Account::query()->where('user_id', $user->id)->orderByAsc('name')->get();
-        return response()->json($accounts);
+
+        $result = $accounts->map(function ($account) {
+            $incomeTotal = Income::where('account_id', $account->id)->sum('amount');
+            $expenseTotal = Expense::where('account_id', $account->id)->sum('amount');
+            return [
+                'id' => $account->id,
+                'name' => $account->name,
+                'description' => $account->description,
+                'rate_remuneration' => $account->rate_remuneration,
+                'rate_imposition' => $account->rate_imposition,
+                'balance' => $incomeTotal - $expenseTotal,
+            ];
+        });
+        return response()->json($result);
     }
 
     public function store(Request $request)
@@ -36,7 +51,6 @@ class AccountController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'description' => ['nullable', 'string'],
-            'balance' => ['nullable', 'numeric'],
             'rate_remuneration' => ['nullable', 'numeric'],
             'rate_imposition' => ['nullable', 'numeric'],
         ]);
@@ -55,7 +69,6 @@ class AccountController extends Controller
         $data = $request->validate([
             'name' => ['sometimes', 'required', 'string', 'max:100'],
             'description' => ['sometimes', 'string'],
-            'balance' => ['sometimes', 'numeric'],
             'rate_remuneration' => ['sometimes', 'numeric'],
             'rate_imposition' => ['sometimes', 'numeric'],
         ]);
@@ -70,7 +83,15 @@ class AccountController extends Controller
         if (!$user || $account->user_id !== $user->id) {
             return response()->json(['error' => 'Accès refusé.'], 403);
         }
-        return response()->json($account);
+
+        $incomeTotal = Income::where('account_id', $account->id)->sum('amount');
+        $expenseTotal = Expense::where('account_id', $account->id)->sum('amount');
+        return response()->json([
+                'account' => $account,
+                'income_total' => $incomeTotal,
+                'expense_total' => $expenseTotal,
+                'balance' => $incomeTotal - $expenseTotal,
+                ]);
     }
 
     public function destroy (Account $account)
