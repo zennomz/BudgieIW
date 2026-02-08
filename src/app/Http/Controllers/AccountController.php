@@ -10,8 +10,8 @@ class AccountController extends Controller
     public function indexAll()
     {
         $user = auth()->user();
-        if (!$user || !$user->role !== 'admin') {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if (!$user || $user->role !== 'admin') {
+            return response()->json(['error' => 'Accès non autorisé.'], 403);
         }
         $accounts = Account::query()->orderByDesc('created_at')->get();
         return response()->json($accounts);
@@ -21,7 +21,7 @@ class AccountController extends Controller
     {
         $user = auth()->user();
         if (!$user) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Accès refusé.'], 401);
         }
         $accounts = Account::query()->where('user_id', $user->id)->orderByAsc('name')->get();
         return response()->json($accounts);
@@ -31,7 +31,7 @@ class AccountController extends Controller
     {
         $user = auth()->user();
         if (!$user) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Accès refusé.'], 401);
         }
         $data = $request->validate([
             'name' => ['required', 'string', 'max:100'],
@@ -46,11 +46,29 @@ class AccountController extends Controller
         return response()->json($account, 201);
     }
 
+    public function update(Request $request, Account $account)
+    {
+        $user = auth()->user();
+        if (!$user || $account->user_id !== $user->id) {
+            return response()->json(['error' => 'Accès refusé.'], 403);
+        }
+        $data = $request->validate([
+            'name' => ['sometimes', 'required', 'string', 'max:100'],
+            'description' => ['sometimes', 'string'],
+            'balance' => ['sometimes', 'numeric'],
+            'rate_remuneration' => ['sometimes', 'numeric'],
+            'rate_imposition' => ['sometimes', 'numeric'],
+        ]);
+
+        $account->update($data);
+        return response()->json($account);
+    }
+
     public function show (Account $account)
     {
         $user = auth()->user();
         if (!$user || $account->user_id !== $user->id) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Accès refusé.'], 403);
         }
         return response()->json($account);
     }
@@ -59,7 +77,7 @@ class AccountController extends Controller
     {
         $user = auth()->user();
         if (!$user || $account->user_id !== $user->id) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'Accès refusé.'], 403);
         }
         $account->delete();
         return response()->json(null, 204);
