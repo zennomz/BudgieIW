@@ -3,6 +3,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\IncomeController;
+use App\Http\Controllers\PrevisionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => view('home'))
@@ -25,6 +26,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/comptes/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
     Route::get('/comptes/{account}/depenses', [ExpenseController::class, 'index'])->name('expenses.index');
     Route::get('/comptes/{account}/revenus', [IncomeController::class, 'index'])->name('incomes.index');
+    Route::get('/comptes/{account}/previsions', [PrevisionController::class, 'index'])->name('previsions.index');
+    Route::post('/comptes/{account}/previsions', [PrevisionController::class, 'store'])->name('previsions.store');
+    Route::get('/comptes/{account}/previsions/{prevision}', [PrevisionController::class, 'show'])->name('previsions.show');
+    Route::delete('/comptes/{account}/previsions/{prevision}', [PrevisionController::class, 'destroy'])->name('previsions.destroy');
 
     Route::middleware('admin')->group(function () {
         Route::get('/admin/comptes', [AccountController::class, 'indexAll'])->name('accounts.indexAll');
