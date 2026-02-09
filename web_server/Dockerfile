@@ -15,5 +15,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN useradd -G www-data,root -u 1000 -d /home/dev dev
 RUN mkdir -p /home/dev/.composer && chown -R dev:dev /home/dev && chown -R dev:dev /var/www
+RUN composer require phpmailer/phpmailer --no-interaction
 
 USER dev
