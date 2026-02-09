@@ -15,6 +15,9 @@ Route::get('/', fn() => view('home'))
 Route::get('/inscription', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/inscription', [AuthController::class, 'register'])->name('register.store');
 
+Route::get('/verify-email', fn() => view('auth.verify-email'))->name('verification.notice');
+Route::get('/verify', [AuthController::class, 'verify'])->name('verification.verify');
+
 Route::get('/connexion', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/connexion', [AuthController::class, 'login'])->name('login.store');
 
