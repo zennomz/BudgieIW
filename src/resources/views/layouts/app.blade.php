@@ -23,11 +23,40 @@
                 </a>
 
                 <!-- Nav -->
-                <div class="flex items-center gap-3.5 flex-wrap">
+                <div class="flex items-center gap-1 flex-wrap">
+                    <a href="{{ route('home') }}" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
+                        Tableau de bord
+                    </a>
+                    <a href="{{ route('accounts.index') }}" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
+                        Comptes
+                    </a>
+                    <a href="#" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
+                        Dépenses
+                    </a>
+                    <a href="#" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
+                        Revenus
+                    </a>
+                    <a href="#" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
+                        Prévisions
+                    </a>
+                    <a href="#" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
+                        Abonnements
+                    </a>
+                    <a href="{{ route('profile.show') }}" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
+                        Profil
+                    </a>
                     @auth
-                        <a href="{{ route('home') }}" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
-                            Tableau de bord
-                        </a>
+                        @if(auth()->user()->role === 'admin')
+                            <a href="#" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
+                                Admin
+                            </a>
+                        @endif
+                    @endauth
+                </div>
+
+                <!-- Auth buttons -->
+                <div class="flex items-center gap-2">
+                    @auth
                         <form method="POST" action="{{ route('logout') }}" class="inline">
                             @csrf
                             <button type="submit" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">

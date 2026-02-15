@@ -16,21 +16,13 @@
                 Inspiré par Finary, pensé pour la confidentialité.
             </p>
 
-            @auth
-                <div class="inline-block px-4 py-2 bg-budgie-accent/10 border border-budgie-accent/20 rounded-lg">
-                    <p class="text-budgie-accent font-medium">
-                        Bienvenue <strong>{{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</strong>
-                    </p>
-                </div>
-            @endauth
+            <div class="inline-block px-4 py-2 bg-budgie-accent/10 border border-budgie-accent/20 rounded-lg">
+                <p class="text-budgie-accent font-medium">
+                    Bienvenue <strong>{{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</strong>
+                </p>
+            </div>
 
             <div class="flex items-center gap-3 flex-wrap pt-2">
-                @guest
-                    <x-button variant="primary" onclick="location.href='{{ route('register') }}'">
-                        Créer un compte
-                    </x-button>
-                @endguest
-
                 <x-button variant="secondary" onclick="location.href='{{ route('home') }}'">
                     Voir la démo
                 </x-button>
