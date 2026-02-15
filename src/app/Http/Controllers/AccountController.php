@@ -23,13 +23,13 @@ class AccountController extends Controller
     {
         $user = auth()->user();
         if (!$user) {
-            return response()->json(['error' => 'Accès refusé.'], 401);
+            return redirect()->route('login');
         }
-        $accounts = Account::query()->where('user_id', $user->id)->orderByAsc('name')->get();
+        $accounts = Account::query()->where('user_id', $user->id)->orderBy('name')->get();
 
         $result = $accounts->map(function ($account) {
-            $incomeTotal = Income::where('account_id', $account->id)->sum('amount');
-            $expenseTotal = Expense::where('account_id', $account->id)->sum('amount');
+            $incomeTotal = (float) Income::where('account_id', $account->id)->sum('amount');
+            $expenseTotal = (float) Expense::where('account_id', $account->id)->sum('amount');
             return [
                 'id' => $account->id,
                 'name' => $account->name,
@@ -39,7 +39,8 @@ class AccountController extends Controller
                 'balance' => $incomeTotal - $expenseTotal,
             ];
         });
-        return response()->json($result);
+        
+        return view('accounts.index', ['accounts' => $result]);
     }
 
     public function store(Request $request)
@@ -77,7 +78,7 @@ class AccountController extends Controller
         return response()->json($account);
     }
 
-    public function show (Account $account)
+    public function show(Account $account)
     {
         $user = auth()->user();
         if (!$user || $account->user_id !== $user->id) {
@@ -86,12 +87,25 @@ class AccountController extends Controller
 
         $incomeTotal = Income::where('account_id', $account->id)->sum('amount');
         $expenseTotal = Expense::where('account_id', $account->id)->sum('amount');
-        return response()->json([
-                'account' => $account,
-                'income_total' => $incomeTotal,
-                'expense_total' => $expenseTotal,
-                'balance' => $incomeTotal - $expenseTotal,
-                ]);
+        
+        $incomes = Income::where('account_id', $account->id)
+            ->orderByDesc('date_start')
+            ->take(5)
+            ->get();
+            
+        $expenses = Expense::where('account_id', $account->id)
+            ->orderByDesc('date_start')
+            ->take(5)
+            ->get();
+
+        return view('accounts.show', [
+            'account' => $account,
+            'income_total' => $incomeTotal,
+            'expense_total' => $expenseTotal,
+            'balance' => $incomeTotal - $expenseTotal,
+            'incomes' => $incomes,
+            'expenses' => $expenses,
+        ]);
     }
 
     public function destroy (Account $account)

@@ -12,7 +12,7 @@ class PrevisionController extends Controller
     {
         $user = auth()->user();
         if (!$user || $account->user_id !== $user->id) {
-            abort(403);
+            return response()->json(['error' => 'Accès non autorisé.'], 403);
         }
 
         $previsions = $account->previsions()->orderBy('id')->get();
@@ -23,11 +23,11 @@ class PrevisionController extends Controller
     {
         $user = auth()->user();
         if (!$user || $account->user_id !== $user->id) {
-            abort(403);
+            return response()->json(['error' => 'Accès non autorisé.'], 403);
         }
 
         if ($prevision->account_id !== $account->id) {
-            abort(404);
+            return response()->json(['error' => 'Ressource non trouvée.'], 404);
         }
 
         return response()->json($prevision);
@@ -37,7 +37,7 @@ class PrevisionController extends Controller
     {
         $user = auth()->user();
         if (!$user || $account->user_id !== $user->id) {
-            abort(403);
+            return response()->json(['error' => 'Accès non autorisé.'], 403);
         }
 
         $data = $request->validate([
@@ -60,11 +60,11 @@ class PrevisionController extends Controller
     {
         $user = auth()->user();
         if (!$user || $account->user_id !== $user->id) {
-            abort(403);
+            return response()->json(['error' => 'Accès non autorisé.'], 403);
         }
 
         if ($prevision->account_id !== $account->id) {
-            abort(404);
+            return response()->json(['error' => 'Ressource non trouvée.'], 404);
         }
 
         $prevision->delete();
