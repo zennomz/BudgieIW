@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profil', [UserController::class, 'destroy'])->name('profile.destroy');
     Route::get('/comptes', [AccountController::class, 'index'])->name('accounts.index');
     Route::post('/comptes', [AccountController::class, 'store'])->name('accounts.store');
+    Route::get('/comptes/expenses', [ExpenseController::class, 'userExpenses'])->name('expenses.userExpenses');
     Route::put('/comptes/{account}', [AccountController::class, 'update'])->name('accounts.update');
     Route::get('/comptes/{account}', [ AccountController::class, 'show'])->name('accounts.show');
     Route::delete('/comptes/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');

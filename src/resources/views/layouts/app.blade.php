@@ -30,7 +30,7 @@
                     <a href="{{ route('accounts.index') }}" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
                         Comptes
                     </a>
-                    <a href="#" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
+                    <a href="{{ route('expenses.userExpenses') }}" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
                         Dépenses
                     </a>
                     <a href="#" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
