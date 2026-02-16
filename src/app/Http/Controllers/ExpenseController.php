@@ -23,6 +23,28 @@ class ExpenseController extends Controller
         ]);
     }
 
+    public function userExpenses()
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['error' => 'Accès non autorisé.'], 401);
+        }
+
+        $accounts = Account::where('user_id', $user->id)->get();
+        $accountIds = $accounts->pluck('id');
+        
+        $expenses = Expense::whereIn('account_id', $accountIds)
+            ->with('account')
+            ->orderByDesc('date_start')
+            ->orderByDesc('id')
+            ->get();
+
+        return view('expenses.all', [
+            'expenses' => $expenses,
+            'accounts' => $accounts,
+        ]);
+    }
+
     public function indexAll()
     {
         $expenses = Expense::query()->orderByDesc('date_start')->orderByDesc('id')->get();
