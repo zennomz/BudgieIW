@@ -262,6 +262,8 @@
     document.getElementById('form-new-income').addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        const submitBtn = document.querySelector('#form-new-income button[type="submit"]');
+        const cancelBtn = document.querySelector('#form-new-income button[type="button"]');
         const formData = new FormData(this);
         const data = {
             name: formData.get('name'),
@@ -275,6 +277,9 @@
         };
         
         try {
+            submitBtn.disabled = true;
+            if (cancelBtn) cancelBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div> Création...';
             const response = await fetch('{{ route("incomes.store", $account->id) }}', {
                 method: 'POST',
                 headers: {
@@ -290,10 +295,16 @@
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || 'Erreur lors de la création du revenu.');
+                submitBtn.disabled = false;
+                if (cancelBtn) cancelBtn.disabled = false;
+                submitBtn.innerHTML = 'Créer le revenu';
             }
         } catch (error) {
             console.error('Erreur:', error);
             alert('Erreur lors de la création du revenu.');
+            submitBtn.disabled = false;
+            if (cancelBtn) cancelBtn.disabled = false;
+            submitBtn.innerHTML = 'Créer le revenu';
         }
     });
     
@@ -301,6 +312,8 @@
     document.getElementById('form-edit-income').addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        const submitBtn = document.querySelector('#form-edit-income button[type="submit"]');
+        const cancelBtn = document.querySelector('#form-edit-income button[type="button"]');
         const formData = new FormData(this);
         const incomeId = formData.get('income_id');
         const data = {
@@ -314,6 +327,9 @@
         };
         
         try {
+            submitBtn.disabled = true;
+            if (cancelBtn) cancelBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div> Enregistrement...';
             const response = await fetch(`/comptes/{{ $account->id }}/revenus/${incomeId}`, {
                 method: 'PUT',
                 headers: {
@@ -329,10 +345,16 @@
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || 'Erreur lors de la modification du revenu.');
+                submitBtn.disabled = false;
+                if (cancelBtn) cancelBtn.disabled = false;
+                submitBtn.innerHTML = 'Enregistrer';
             }
         } catch (error) {
             console.error('Erreur:', error);
             alert('Erreur lors de la modification du revenu.');
+            submitBtn.disabled = false;
+            if (cancelBtn) cancelBtn.disabled = false;
+            submitBtn.innerHTML = 'Enregistrer';
         }
     });
     

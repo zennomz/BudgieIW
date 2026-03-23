@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/comptes', [AccountController::class, 'index'])->name('accounts.index');
     Route::post('/comptes', [AccountController::class, 'store'])->name('accounts.store');
     Route::get('/comptes/expenses', [ExpenseController::class, 'userExpenses'])->name('expenses.userExpenses');
+    Route::get('/comptes/incomes', [IncomeController::class, 'userIncomes'])->name('incomes.userIncomes');
     Route::put('/comptes/{account}', [AccountController::class, 'update'])->name('accounts.update');
     Route::get('/comptes/{account}', [ AccountController::class, 'show'])->name('accounts.show');
     Route::delete('/comptes/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');

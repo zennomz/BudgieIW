@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -13,7 +14,12 @@ class UserController extends Controller
         if (!$user) {
             return response()->json(['error' => 'Accès refusé.'], 401);
         }
-        return response()->json($user);
+
+        if ($request->expectsJson()) {
+            return response()->json($user);
+        }
+
+        return view('profile.show', ['user' => $user]);
     }
 
     public function update(Request $request)
@@ -22,14 +28,22 @@ class UserController extends Controller
         if (!$user) {
             return response()->json(['error' => 'Accès refusé.'], 401);
         }
+
         $data = $request->validate([
             'firstname' => ['sometimes', 'string', 'max:50'],
             'lastname' => ['sometimes', 'string', 'max:50'],
+            'email' => ['sometimes', 'email', Rule::unique('users', 'email')->ignore($user->id)],
+            'date_of_birth' => ['sometimes', 'nullable', 'date'],
             'numero_phone' => ['sometimes', 'nullable', 'string', 'max:20'],
         ]);
 
         $user->update($data);
-        return response()->json($user);
+
+        if ($request->expectsJson()) {
+            return response()->json($user);
+        }
+
+        return redirect()->route('profile.show')->with('status', 'Profil mis a jour avec succes.');
     }
 
     public function destroy(Request $request)

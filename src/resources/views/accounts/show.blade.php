@@ -244,10 +244,15 @@
     document.getElementById('form-edit-account').addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        const submitBtn = document.querySelector('#form-edit-account button[type="submit"]');
+        const cancelBtn = document.querySelector('#form-edit-account button[type="button"]');
         const formData = new FormData(this);
         const data = Object.fromEntries(formData.entries());
         
         try {
+            submitBtn.disabled = true;
+            if (cancelBtn) cancelBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div> Enregistrement...';
             const response = await fetch('{{ route("accounts.update", $account->id) }}', {
                 method: 'PUT',
                 headers: {
@@ -263,10 +268,16 @@
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || 'Erreur lors de la modification du compte.');
+                submitBtn.disabled = false;
+                if (cancelBtn) cancelBtn.disabled = false;
+                submitBtn.innerHTML = 'Enregistrer';
             }
         } catch (error) {
             console.error('Erreur:', error);
             alert('Erreur lors de la modification du compte.');
+            submitBtn.disabled = false;
+            if (cancelBtn) cancelBtn.disabled = false;
+            submitBtn.innerHTML = 'Enregistrer';
         }
     });
     

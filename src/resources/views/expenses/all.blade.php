@@ -146,10 +146,10 @@
             </div>
             
             <div class="flex justify-end gap-3 pt-4">
-                <x-button variant="secondary" type="button" onclick="closeModal()">
+                <x-button id="cancel-new-expense" variant="secondary" type="button" onclick="closeModal()">
                     Annuler
                 </x-button>
-                <x-button variant="primary" type="submit">
+                <x-button id="submit-new-expense" variant="primary" type="submit">
                     Créer la dépense
                 </x-button>
             </div>
@@ -273,6 +273,8 @@
     document.getElementById('form-new-expense').addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        const submitBtn = document.getElementById('submit-new-expense');
+        const cancelBtn = document.getElementById('cancel-new-expense');
         const formData = new FormData(this);
         const accountId = formData.get('account_id');
         
@@ -292,6 +294,9 @@
         };
         
         try {
+            submitBtn.disabled = true;
+            cancelBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div> Création...';
             const response = await fetch(`/comptes/${accountId}/depenses`, {
                 method: 'POST',
                 headers: {
@@ -318,6 +323,8 @@
     document.getElementById('form-edit-expense').addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        const submitBtn = document.querySelector('#form-edit-expense button[type="submit"]');
+        const cancelBtn = document.querySelector('#form-edit-expense button[type="button"]');
         const formData = new FormData(this);
         const expenseId = formData.get('expense_id');
         const accountId = formData.get('account_id');
@@ -332,6 +339,9 @@
         };
         
         try {
+            submitBtn.disabled = true;
+            if (cancelBtn) cancelBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div> Enregistrement...';
             const response = await fetch(`/comptes/${accountId}/depenses/${expenseId}`, {
                 method: 'PUT',
                 headers: {
@@ -347,10 +357,16 @@
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || 'Erreur lors de la modification de la dépense.');
+                submitBtn.disabled = false;
+                if (cancelBtn) cancelBtn.disabled = false;
+                submitBtn.innerHTML = 'Enregistrer';
             }
         } catch (error) {
             console.error('Erreur:', error);
             alert('Erreur lors de la modification de la dépense.');
+            submitBtn.disabled = false;
+            if (cancelBtn) cancelBtn.disabled = false;
+            submitBtn.innerHTML = 'Enregistrer';
         }
     });
     

@@ -18,7 +18,7 @@
             </x-alert>
         @endif
 
-        <form method="POST" action="{{ route('login.store') }}" class="space-y-4">
+        <form id="login-form" method="POST" action="{{ route('login.store') }}" class="space-y-4">
             @csrf
 
             <x-input
@@ -38,7 +38,7 @@
                 required
             />
 
-            <x-button type="submit" variant="primary" class="w-full mt-6">
+            <x-button id="login-submit" type="submit" variant="primary" class="w-full mt-6">
                 Connexion
             </x-button>
 
@@ -59,4 +59,12 @@
         </p>
     </x-card>
 </div>
+
+<script>
+    document.getElementById('login-form').addEventListener('submit', function() {
+        const submitBtn = document.getElementById('login-submit');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div> Connexion...';
+    });
+</script>
 @endsection
