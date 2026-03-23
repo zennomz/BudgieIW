@@ -17,7 +17,7 @@
             </x-alert>
         @endif
 
-        <form method="POST" action="{{ route('register.store') }}" class="space-y-4">
+        <form id="register-form" method="POST" action="{{ route('register.store') }}" class="space-y-4">
             @csrf
 
             <!-- Nom et Prénom -->
@@ -83,7 +83,7 @@
                 placeholder="+33 6 12 34 56 78"
             />
 
-            <x-button type="submit" variant="primary" class="w-full mt-6">
+            <x-button id="register-submit" type="submit" variant="primary" class="w-full mt-6">
                 Créer mon compte
             </x-button>
 
@@ -96,4 +96,12 @@
         </form>
     </x-card>
 </div>
+
+<script>
+    document.getElementById('register-form').addEventListener('submit', function() {
+        const submitBtn = document.getElementById('register-submit');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div> Création...';
+    });
+</script>
 @endsection

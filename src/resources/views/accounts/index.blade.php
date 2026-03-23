@@ -136,10 +136,15 @@
     document.getElementById('form-new-account').addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        const submitBtn = document.querySelector('#form-new-account button[type="submit"]');
+        const cancelBtn = document.querySelector('#form-new-account button[type="button"]');
         const formData = new FormData(this);
         const data = Object.fromEntries(formData.entries());
         
         try {
+            submitBtn.disabled = true;
+            if (cancelBtn) cancelBtn.disabled = true;
+            submitBtn.innerHTML = '<div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div> Création...';
             const response = await fetch('{{ route("accounts.store") }}', {
                 method: 'POST',
                 headers: {
@@ -155,10 +160,16 @@
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || 'Erreur lors de la création du compte.');
+                submitBtn.disabled = false;
+                if (cancelBtn) cancelBtn.disabled = false;
+                submitBtn.innerHTML = 'Créer le compte';
             }
         } catch (error) {
             console.error('Erreur:', error);
             alert('Erreur lors de la création du compte.');
+            submitBtn.disabled = false;
+            if (cancelBtn) cancelBtn.disabled = false;
+            submitBtn.innerHTML = 'Créer le compte';
         }
     });
     

@@ -23,6 +23,29 @@ class IncomeController extends Controller
         ]);
     }
 
+    public function userIncomes()
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return response()->json(['error' => 'Accès non autorisé.'], 401);
+        }
+
+        $accounts = Account::where('user_id', $user->id)->get();
+        $accountIds = $accounts->pluck('id');
+        
+        $incomes = Income::whereIn('account_id', $accountIds)
+            ->with('account')
+            ->orderByDesc('date_start')
+            ->orderByDesc('id')
+            ->get();
+
+        return view('incomes.all', [
+            'incomes' => $incomes,
+            'accounts' => $accounts,
+        ]);
+
+    }
+
     public function indexAll()
     {
         $incomes = Income::query()->orderByDesc('date_start')->orderByDesc('id')->get();
