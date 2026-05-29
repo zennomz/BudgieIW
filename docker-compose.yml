@@ -3,9 +3,11 @@ services:
     build:
       context: .
       dockerfile: web_server/Dockerfile
+    image: zenomz/budgie-app:latest
     container_name: app
     volumes:
       - ./src:/var/www
+      - /var/www/vendor
     networks:
       - budgie-app
 
