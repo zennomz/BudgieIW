@@ -100,7 +100,7 @@
 </div>
 
 <!-- Modal Nouvelle dépense -->
-<div id="modal-new-expense" class="fixed inset-0 z-50 hidden items-center justify-center bg-black">
+<div id="modal-new-expense" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm">
     <div class="bg-budgie-card border border-white/10 rounded-budgie p-6 max-w-md mx-4 shadow-budgie">
         <h2 class="text-xl font-bold mb-6">Nouvelle dépense</h2>
         
@@ -158,7 +158,7 @@
 </div>
 
 <!-- Modal Éditer dépense -->
-<div id="modal-edit-expense" class="fixed inset-0 z-50 hidden items-center justify-center bg-black">
+<div id="modal-edit-expense" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm">
     <div class="bg-budgie-card border border-white/10 rounded-budgie p-6 max-w-md mx-4 shadow-budgie">
         <h2 class="text-xl font-bold mb-6">Éditer la dépense</h2>
         

@@ -36,79 +36,80 @@
         </div>
 
         <!-- Dashboard Preview -->
-        <x-card>
-            
-            <div class="grid grid-cols-3 gap-3 mb-4">
+        <x-card class="space-y-4">
+            <!-- Valeur totale (mise en avant) -->
+            <x-card :padded="false" class="p-4">
+                <div class="flex items-end justify-between gap-3">
+                    <div>
+                        <h4 class="text-xs font-semibold uppercase tracking-wider text-budgie-muted mb-1.5">Valeur totale</h4>
+                        <p class="text-3xl font-bold">32 450 €</p>
+                    </div>
+                    <span class="text-sm font-medium text-budgie-success whitespace-nowrap">+2,3 % ce mois</span>
+                </div>
+            </x-card>
+
+            <!-- Cash / Investi -->
+            <div class="grid grid-cols-2 gap-3">
                 <x-card :padded="false" class="p-4">
-                    <h4 class="text-xs font-semibold uppercase tracking-wider text-budgie-muted mb-1.5">Valeur totale</h4>
-                    <p class="">32 450 €</p>
-                    <span class="">+2,3% ce mois</span>
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-budgie-muted mb-1.5">Cash</h4>
+                    <p class="text-lg font-bold">7 200 €</p>
+                    <span class="text-xs text-budgie-muted">Comptes à vue</span>
                 </x-card>
 
                 <x-card :padded="false" class="p-4">
-                    <h4 class="">Cash</h4>
-                    <p class="">7 200 €</p>
-                    <span class="">Comptes à vue</span>
-                </x-card>
-
-                <x-card :padded="false" class="p-4">
-                    <h4 class="">Investi</h4>
-                    <p class="">25 250 €</p>
-                    <span class="">CTO, Livrets</span>
+                    <h4 class="text-xs font-semibold uppercase tracking-wider text-budgie-muted mb-1.5">Investi</h4>
+                    <p class="text-lg font-bold">25 250 €</p>
+                    <span class="text-xs text-budgie-muted">CTO, Livrets</span>
                 </x-card>
             </div>
 
-            <!-- Transactions Prévisions -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <x-card :padded="false" class="p-4">
-                    <h4 class="text-sm font-bold mb-2">Mouvements récents</h4>
-                    <table class="w-full text-sm">
-                        <thead>
-                            <tr class="border-b border-dashed border-white/5">
-                                <th class="">Date</th>
-                                <th class="">Libellé</th>
-                                <th class="">Montant</th>
-                            </tr>
-                        </thead>
-                        <tbody class="">
-                            <tr>
-                                <td >01/10/2025</td>
-                                <td class="">Salaire</td>
-                                <td class="">
-                                    <span class="">+1 170 €</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">02/10/2025</td>
-                                <td class="">Crédit Moto</td>
-                                <td class="">
-                                    <span class="">-250 €</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="">05/10/2025</td>
-                                <td class="">Alimentation CTO</td>
-                                <td class="">
-                                    <span class="">+50 €</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </x-card>
+            <!-- Mouvements récents -->
+            <x-card :padded="false" class="p-4">
+                <h4 class="text-sm font-bold mb-3">Mouvements récents</h4>
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-white/10 text-left text-xs text-budgie-muted">
+                            <th class="font-medium pb-2">Date</th>
+                            <th class="font-medium pb-2">Libellé</th>
+                            <th class="font-medium pb-2 text-right">Montant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-white/5">
+                            <td class="py-2 text-budgie-muted">01/10/2025</td>
+                            <td class="py-2">Salaire</td>
+                            <td class="py-2 text-right text-budgie-success font-medium">+1 170 €</td>
+                        </tr>
+                        <tr class="border-b border-white/5">
+                            <td class="py-2 text-budgie-muted">02/10/2025</td>
+                            <td class="py-2">Crédit Moto</td>
+                            <td class="py-2 text-right text-budgie-danger font-medium">-250 €</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-budgie-muted">05/10/2025</td>
+                            <td class="py-2">Alimentation CTO</td>
+                            <td class="py-2 text-right text-budgie-success font-medium">+50 €</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </x-card>
 
-                <x-card :padded="false" class="p-4">
-                    <h4 class="">Prévision rapide</h4>
-                    <p class="">
-                        Solde estimé au 31/12/2035 : <strong class="text-budgie-text">98 320 €</strong> (net)
-                    </p>
-                    <p class="">
-                        Hypothèses: intérêts mensuels, revenus & dépenses récurrentes.
-                    </p>
-                    <x-button variant="primary" class="w-full text-sm" onclick="location.href='{{ route('previsions.overview') }}'">
-                        Ouvrir les prévisions
-                    </x-button>
-                </x-card>
-            </div>
+            <!-- Prévision rapide -->
+            <x-card :padded="false" class="p-4">
+                <div class="flex items-center justify-between mb-2">
+                    <h4 class="text-sm font-bold">Prévision rapide</h4>
+                    <span class="text-xs text-budgie-muted">au 31/12/2035</span>
+                </div>
+                <p class="text-sm text-budgie-muted mb-1">
+                    Solde net estimé : <strong class="text-budgie-text text-base">98 320 €</strong>
+                </p>
+                <p class="text-xs text-budgie-muted mb-4">
+                    Hypothèses : intérêts mensuels, revenus &amp; dépenses récurrentes.
+                </p>
+                <x-button variant="primary" class="w-full" onclick="location.href='{{ route('previsions.overview') }}'">
+                    Ouvrir les prévisions
+                </x-button>
+            </x-card>
         </x-card>
     </div>
 </div>
