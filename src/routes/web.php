@@ -42,10 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/comptes/{account}/revenus', [IncomeController::class, 'store'])->name('incomes.store');
     Route::put('/comptes/{account}/revenus/{income}', [IncomeController::class, 'update'])->name('incomes.update');
     Route::delete('/comptes/{account}/revenus/{income}', [IncomeController::class, 'destroy'])->name('incomes.destroy');
+    Route::get('/previsions', [PrevisionController::class, 'overview'])->name('previsions.overview');
     Route::get('/comptes/{account}/previsions', [PrevisionController::class, 'index'])->name('previsions.index');
-    Route::post('/comptes/{account}/previsions', [PrevisionController::class, 'store'])->name('previsions.store');
-    Route::get('/comptes/{account}/previsions/{prevision}', [PrevisionController::class, 'show'])->name('previsions.show');
-    Route::delete('/comptes/{account}/previsions/{prevision}', [PrevisionController::class, 'destroy'])->name('previsions.destroy');
 
     Route::middleware('admin')->group(function () {
         Route::get('/admin/utilisateurs', [UserController::class, 'indexAll'])->name('users.indexAll');

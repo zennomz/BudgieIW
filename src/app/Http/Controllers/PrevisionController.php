@@ -3,71 +3,76 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Prevision;
 use App\Models\Account;
+use App\Services\PrevisionService;
+use Carbon\Carbon;
 
 class PrevisionController extends Controller
 {
-    public function index(Account $account)
+    /**
+     * Par défaut : décembre de l'année en cours.
+     */
+    private function moisChoisi(Request $request): Carbon
     {
-        $user = auth()->user();
-        if (!$user || $account->user_id !== $user->id) {
-            return response()->json(['error' => 'Accès non autorisé.'], 403);
+        $month = $request->query('month');
+        if ($month && preg_match('/^\d{4}-\d{2}$/', $month)) {
+            return Carbon::createFromFormat('Y-m', $month)->startOfMonth();
         }
-
-        $previsions = $account->previsions()->orderBy('id')->get();
-        return response()->json($previsions);
+        return Carbon::create(now()->year, 12, 1);
     }
 
-    public function show (Account $account, Prevision $prevision)
+    /**
+     * Page globale : état de tous mes comptes à une date choisie.
+     */
+    public function overview(Request $request, PrevisionService $service)
     {
         $user = auth()->user();
-        if (!$user || $account->user_id !== $user->id) {
-            return response()->json(['error' => 'Accès non autorisé.'], 403);
+        if (!$user) {
+            return redirect()->route('login');
         }
 
-        if ($prevision->account_id !== $account->id) {
-            return response()->json(['error' => 'Ressource non trouvée.'], 404);
+        $mois = $this->moisChoisi($request);
+        $accounts = Account::where('user_id', $user->id)->orderBy('name')->get();
+
+        $lignes = [];
+        $totaux = ['total_income' => 0, 'total_expense' => 0, 'total_interest' => 0, 'total_final' => 0];
+
+        foreach ($accounts as $account) {
+            $r = $service->projectAccount($account, $mois);
+            $lignes[] = ['account' => $account] + $r;
+            foreach ($totaux as $k => $v) {
+                $totaux[$k] = $v + $r[$k];
+            }
         }
 
-        return response()->json($prevision);
-    }
-
-    public function store(Request $request, Account $account)
-    {
-        $user = auth()->user();
-        if (!$user || $account->user_id !== $user->id) {
-            return response()->json(['error' => 'Accès non autorisé.'], 403);
-        }
-
-        $data = $request->validate([
-            'date_prevision' => ['required', 'date'],
-            'total_income' => ['required', 'numeric', 'min:0'],
-            'total_expense' => ['required', 'numeric', 'min:0'],
-            'total_interest' => ['required', 'numeric', 'min:0'],
-            'total_final' => ['required', 'numeric'],
+        return view('previsions.overview', [
+            'lignes' => $lignes,
+            'totaux' => $totaux,
+            'mois'   => $mois,
         ]);
-
-        $data['account_id'] = $account->id;
-
-        $prevision = new Prevision($data);
-        $prevision->save();
-
-        return response()->json($prevision, 201);
     }
 
-    public function destroy(Account $account, Prevision $prevision)
+    /**
+     * Prévision d'un seul compte à une date choisie.
+     */
+    public function index(Request $request, Account $account, PrevisionService $service)
     {
         $user = auth()->user();
         if (!$user || $account->user_id !== $user->id) {
             return response()->json(['error' => 'Accès non autorisé.'], 403);
         }
 
-        if ($prevision->account_id !== $account->id) {
-            return response()->json(['error' => 'Ressource non trouvée.'], 404);
+        $mois = $this->moisChoisi($request);
+        $resultat = $service->projectAccount($account, $mois);
+
+        if ($request->expectsJson()) {
+            return response()->json($resultat + ['month' => $mois->format('Y-m')]);
         }
 
-        $prevision->delete();
-        return response()->json(null, 204);
+        return view('previsions.index', [
+            'account'  => $account,
+            'resultat' => $resultat,
+            'mois'     => $mois,
+        ]);
     }
 }
