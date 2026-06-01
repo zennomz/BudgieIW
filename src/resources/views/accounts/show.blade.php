@@ -143,7 +143,7 @@
 </div>
 
 <!-- Modal Modifier le compte -->
-<div id="modal-edit-account" class="fixed inset-0 z-50 hidden items-center justify-center bg-black">
+<div id="modal-edit-account" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm">
     <div class="bg-budgie-card border border-white/10 rounded-budgie p-6 max-w-md w mx-4 shadow-budgie">
         <h2 class="text-xl font-bold mb-6">Modifier le compte</h2>
         
@@ -185,7 +185,7 @@
 </div>
 
 <!-- Modal Confirmation suppression -->
-<div id="modal-delete-account" class="fixed inset-0 z-50 hidden items-center justify-center bg-black backdrop-blur-sm">
+<div id="modal-delete-account" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm">
     <div class="bg-budgie-card border border-white/10 rounded-budgie p-6 max-w-md shadow-budgie">
         <h2 class="text-xl font-bold mb-4 text-budgie-danger">Supprimer le compte</h2>
         <p class="text-budgie-muted mb-6">

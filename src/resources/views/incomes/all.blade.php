@@ -100,7 +100,7 @@
 </div>
 
 <!-- Modal Nouveau revenu -->
-<div id="modal-new-income" class="fixed inset-0 z-50 hidden items-center justify-center bg-black">
+<div id="modal-new-income" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm">
     <div class="bg-budgie-card border border-white/10 rounded-budgie p-6 max-w-md mx-4 shadow-budgie">
         <h2 class="text-xl font-bold mb-6">Nouveau revenu</h2>
         
@@ -158,7 +158,7 @@
 </div>
 
 <!-- Modal Éditer revenu -->
-<div id="modal-edit-income" class="fixed inset-0 z-50 hidden items-center justify-center bg-black">
+<div id="modal-edit-income" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm">
     <div class="bg-budgie-card border border-white/10 rounded-budgie p-6 max-w-md mx-4 shadow-budgie">
         <h2 class="text-xl font-bold mb-6">Éditer le revenu</h2>
         
