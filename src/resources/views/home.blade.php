@@ -42,9 +42,9 @@
                 <div class="flex items-end justify-between gap-3">
                     <div>
                         <h4 class="text-xs font-semibold uppercase tracking-wider text-budgie-muted mb-1.5">Valeur totale</h4>
-                        <p class="text-3xl font-bold">32 450 €</p>
+                        <p class="text-3xl font-bold {{ $total >= 0 ? '' : 'text-budgie-danger' }}">{{ number_format($total, 2, ',', ' ') }} €</p>
                     </div>
-                    <span class="text-sm font-medium text-budgie-success whitespace-nowrap">+2,3 % ce mois</span>
+                    <span class="text-sm font-medium text-budgie-muted whitespace-nowrap">{{ $accountsCount }} {{ $accountsCount > 1 ? 'comptes' : 'compte' }}</span>
                 </div>
             </x-card>
 
@@ -52,14 +52,14 @@
             <div class="grid grid-cols-2 gap-3">
                 <x-card :padded="false" class="p-4">
                     <h4 class="text-xs font-semibold uppercase tracking-wider text-budgie-muted mb-1.5">Cash</h4>
-                    <p class="text-lg font-bold">7 200 €</p>
+                    <p class="text-lg font-bold">{{ number_format($cash, 2, ',', ' ') }} €</p>
                     <span class="text-xs text-budgie-muted">Comptes à vue</span>
                 </x-card>
 
                 <x-card :padded="false" class="p-4">
                     <h4 class="text-xs font-semibold uppercase tracking-wider text-budgie-muted mb-1.5">Investi</h4>
-                    <p class="text-lg font-bold">25 250 €</p>
-                    <span class="text-xs text-budgie-muted">CTO, Livrets</span>
+                    <p class="text-lg font-bold">{{ number_format($investi, 2, ',', ' ') }} €</p>
+                    <span class="text-xs text-budgie-muted">Comptes rémunérés</span>
                 </x-card>
             </div>
 
@@ -75,21 +75,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-b border-white/5">
-                            <td class="py-2 text-budgie-muted">01/10/2025</td>
-                            <td class="py-2">Salaire</td>
-                            <td class="py-2 text-right text-budgie-success font-medium">+1 170 €</td>
-                        </tr>
-                        <tr class="border-b border-white/5">
-                            <td class="py-2 text-budgie-muted">02/10/2025</td>
-                            <td class="py-2">Crédit Moto</td>
-                            <td class="py-2 text-right text-budgie-danger font-medium">-250 €</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 text-budgie-muted">05/10/2025</td>
-                            <td class="py-2">Alimentation CTO</td>
-                            <td class="py-2 text-right text-budgie-success font-medium">+50 €</td>
-                        </tr>
+                        @forelse($movements as $m)
+                            <tr class="border-b border-white/5 last:border-0">
+                                <td class="py-2 text-budgie-muted">{{ $m['date'] ? $m['date']->format('d/m/Y') : '—' }}</td>
+                                <td class="py-2">{{ $m['name'] }}</td>
+                                <td class="py-2 text-right font-medium {{ $m['type'] === 'income' ? 'text-budgie-success' : 'text-budgie-danger' }}">
+                                    {{ $m['type'] === 'income' ? '+' : '-' }}{{ number_format($m['amount'], 2, ',', ' ') }} €
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="py-4 text-center text-budgie-muted">Aucun mouvement pour le moment.</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </x-card>
@@ -98,10 +96,10 @@
             <x-card :padded="false" class="p-4">
                 <div class="flex items-center justify-between mb-2">
                     <h4 class="text-sm font-bold">Prévision rapide</h4>
-                    <span class="text-xs text-budgie-muted">au 31/12/2035</span>
+                    <span class="text-xs text-budgie-muted">au {{ $dateCible->format('d/m/Y') }}</span>
                 </div>
                 <p class="text-sm text-budgie-muted mb-1">
-                    Solde net estimé : <strong class="text-budgie-text text-base">98 320 €</strong>
+                    Solde net estimé : <strong class="text-base {{ $previsionTotal >= 0 ? 'text-budgie-text' : 'text-budgie-danger' }}">{{ number_format($previsionTotal, 2, ',', ' ') }} €</strong>
                 </p>
                 <p class="text-xs text-budgie-muted mb-4">
                     Hypothèses : intérêts mensuels, revenus &amp; dépenses récurrentes.

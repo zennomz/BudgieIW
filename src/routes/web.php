@@ -5,10 +5,10 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\PrevisionController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn() => view('home'))
-
+Route::get('/', [HomeController::class, 'index'])
     ->name('home')
     ->middleware('auth');
 
