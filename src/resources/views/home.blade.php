@@ -104,7 +104,7 @@
                     <p class="">
                         Hypothèses: intérêts mensuels, revenus & dépenses récurrentes.
                     </p>
-                    <x-button variant="primary" class="w-full text-sm">
+                    <x-button variant="primary" class="w-full text-sm" onclick="location.href='{{ route('previsions.overview') }}'">
                         Ouvrir les prévisions
                     </x-button>
                 </x-card>
