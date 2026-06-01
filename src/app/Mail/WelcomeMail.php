@@ -20,10 +20,8 @@ function confirmAccountMail($sendTo, $token)
         $mail->Host = "mailhog";
         $mail->Port = "1025";
         $mail->SMTPAuth = false;
-
-        $link = "http://localhost:8000/verify?email=" . urlencode($sendTo) . "&token=" . urlencode($token);
+        $link = APP_URL . "/verify?email=" . urlencode($sendTo) . "&token=" . urlencode($token);
         $body = "Bonjour,<br>Veuillez confirmer votre inscription en cliquant ici : <a href='$link'>Confirmer mon compte</a>";
-
         $mail->setFrom("noreply@budgie.com", "Budgie");
         $mail->Subject = 'Confirmation de votre inscription';
         $mail->addAddress($sendTo);
@@ -56,7 +54,7 @@ function resetPasswordMail($sendTo, $token)
         $mail->Port = "1025";
         $mail->SMTPAuth = false;
 
-        $link = "http://localhost:8000/reset_password?email=" . urlencode($sendTo) . "&token=" . urlencode($token);
+        $link = APP_URL . "/reset_password?email=" . urlencode($sendTo) . "&token=" . urlencode($token);
         $body = "Bonjour,<br>Vous avez demandé à réinitialiser votre mot de passe. Cliquez sur le lien suivant pour créer un nouveau mot de passe : <a href='$link'>Réinitialiser mon mot de passe</a><br><br>Si vous n'avez pas fait cette demande, ignorez cet email.";
 
         $mail->setFrom("noreply@budgie.com", "Budgie");
