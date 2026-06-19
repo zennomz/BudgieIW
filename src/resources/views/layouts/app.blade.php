@@ -39,15 +39,16 @@
                     <a href="{{ route('previsions.overview') }}" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
                         Prévisions
                     </a>
-                    <a href="#" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
+                    <!-- <a href="#" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
                         Abonnements
-                    </a>
+                    </a> -->
                     <a href="{{ route('profile.show') }}" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
                         Profil
                     </a>
                     @auth
                         @if(auth()->user()->role === 'admin')
-                            <a href="#" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
+                            <span class="text-white/20 select-none self-center px-1" aria-hidden="true">|</span>
+                            <a href="{{ route('admin') }}" class="px-3 py-2 rounded-full border border-transparent hover:border-white/10 hover:bg-white/5 transition-all text-sm">
                                 Admin
                             </a>
                         @endif
