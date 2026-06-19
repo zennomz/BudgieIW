@@ -6,6 +6,7 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\PrevisionController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])
@@ -46,16 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/comptes/{account}/previsions', [PrevisionController::class, 'index'])->name('previsions.index');
 
     Route::middleware('admin')->group(function () {
-        Route::get('/admin/utilisateurs', [UserController::class, 'indexAll'])->name('users.indexAll');
-        Route::put('/admin/utilisateurs/{user}', [UserController::class, 'updateAdmin'])->name('users.updateAdmin');
-        Route::get('/admin/comptes', [AccountController::class, 'indexAll'])->name('accounts.indexAll');
-        Route::get('/admin/depenses', [ExpenseController::class, 'indexAll'])->name('expenses.indexAll');
-        Route::put('/admin/depenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
-        //Route::post('/admin/depenses', [ExpenseController::class, 'store'])->name('expenses.store');
-        Route::delete('/admin/depenses/{expense}', [ExpenseController::class, 'destroy'])->name('expenses.destroy');
-        Route::get('/admin/revenus', [IncomeController::class, 'indexAll'])->name('incomes.indexAll');
-        //Route::put('/admin/revenus/{income}', [IncomeController::class, 'update'])->name('incomes.update');
-        //Route::post('/admin/revenus', [IncomeController::class, 'store'])->name('incomes.store');
-        Route::delete('/admin/revenus/{income}', [IncomeController::class, 'destroy'])->name('incomes.destroy');
+        Route::get('/admin', [AdminController::class, 'indexAll'])->name('admin');
+        Route::put('/admin/utilisateurs/{user}', [AdminController::class, 'updateUser'])->name('users.updateAdmin');
     });
 });
