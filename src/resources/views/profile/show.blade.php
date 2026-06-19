@@ -95,10 +95,6 @@
             </x-button>
         </x-card>
     </div>
-
-    <p class="text-budgie-muted mt-16 text-sm">
-        &copy; Profil - Budgie
-    </p>
 </div>
 
 <script>

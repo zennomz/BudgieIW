@@ -14,18 +14,18 @@
             </a>
             <h1 class="text-3xl font-bold">Toutes les dépenses</h1>
         </div>
-        
+
         <div class="flex items-center gap-4">
             <!-- Recherche -->
             <div class="relative">
-                <input 
-                    type="text" 
-                    placeholder="Filtrer par nom ou description..." 
+                <input
+                    type="text"
+                    placeholder="Filtrer par nom ou description"
                     class="w-72 px-4 py-2.5 bg-white/[0.06] border border-white/10 rounded-lg text-budgie-text placeholder-budgie-muted focus:outline-none focus:ring-2 focus:ring-budgie-accent focus:border-transparent transition-all"
                     id="search-expenses"
                 />
             </div>
-            
+
             <!-- Bouton Nouvelle dépense -->
             <x-button variant="primary" onclick="openModal()">
                 Nouvelle dépense
@@ -103,48 +103,50 @@
 <div id="modal-new-expense" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm">
     <div class="bg-budgie-card border border-white/10 rounded-budgie p-6 max-w-md mx-4 shadow-budgie">
         <h2 class="text-xl font-bold mb-6">Nouvelle dépense</h2>
-        
+
         <form id="form-new-expense" class="space-y-4">
             @csrf
-            
+
             <div>
                 <label class="block text-sm text-budgie-muted mb-2">Compte</label>
-                <select name="account_id" id="new-account-id" required class="w-full px-4 py-2.5 bg-white/[0.06] border border-white/10 rounded-lg text-budgie-text focus:outline-none focus:ring-2 focus:ring-budgie-accent focus:border-transparent transition-all">
-                    <option value="">Sélectionner un compte...</option>
+                <select name="account_id" id="edit-account-id" required class="w-full px-4 py-2.5 bg-white/[0.06] border border-white/10 rounded-lg text-budgie-text focus:outline-none focus:ring-2 focus:ring-budgie-accent focus:border-transparent transition-all">
+                    <option value="" class="bg-budgie-card text-budgie-text">Sélectionner un compte...</option>
                     @foreach($accounts as $account)
-                        <option value="{{ $account->id }}">{{ $account->name }}</option>
+                        <option value="{{ $account->id }}" class="bg-budgie-card text-budgie-text">
+                            {{ $account->name }}
+                        </option>
                     @endforeach
                 </select>
             </div>
-            
+
             <x-input label="Nom" name="name" required placeholder="Ex: Crédit Moto" />
-            
+
             <x-input label="Description" name="description" placeholder="Ex: Mensualité crédit" />
-            
+
             <x-input label="Montant (€)" name="amount" type="number" step="0.01" required placeholder="Ex: 250" />
-            
+
             <div class="grid grid-cols-2 gap-4">
                 <x-input label="Date début" name="date_start" type="date" required />
                 <x-input label="Date fin" name="date_end" type="date" />
             </div>
-            
+
             <div class="space-y-2">
                 <label class="flex items-center gap-2 cursor-pointer">
                     <input type="checkbox" name="recurring" id="recurring-checkbox" class="w-4 h-4 rounded bg-white/10 border-white/20 text-budgie-accent focus:ring-budgie-accent">
                     <span class="text-sm text-budgie-muted">Dépense récurrente</span>
                 </label>
             </div>
-            
+
             <div id="recurring-options" class="hidden">
                 <label class="block text-sm text-budgie-muted mb-2">Fréquence</label>
                 <select name="value_recurring" class="w-full px-4 py-2.5 bg-white/[0.06] border border-white/10 rounded-lg text-budgie-text focus:outline-none focus:ring-2 focus:ring-budgie-accent focus:border-transparent transition-all">
-                    <option value="">Sélectionner...</option>
-                    <option value="WEEKLY">Toutes les semaines</option>
-                    <option value="MONTHLY">Tous les mois</option>
-                    <option value="YEARLY">Tous les ans</option>
+                    <option value="" class="bg-budgie-card text-budgie-text">Sélectionner...</option>
+                    <option value="WEEKLY" class="bg-budgie-card text-budgie-text">Toutes les semaines</option>
+                    <option value="MONTHLY" class="bg-budgie-card text-budgie-text">Tous les mois</option>
+                    <option value="YEARLY" class="bg-budgie-card text-budgie-text">Tous les ans</option>
                 </select>
             </div>
-            
+
             <div class="flex justify-end gap-3 pt-4">
                 <x-button id="cancel-new-expense" variant="secondary" type="button" onclick="closeModal()">
                     Annuler
@@ -161,41 +163,41 @@
 <div id="modal-edit-expense" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm">
     <div class="bg-budgie-card border border-white/10 rounded-budgie p-6 max-w-md mx-4 shadow-budgie">
         <h2 class="text-xl font-bold mb-6">Éditer la dépense</h2>
-        
+
         <form id="form-edit-expense" class="space-y-4">
             @csrf
             @method('PUT')
             <input type="hidden" name="expense_id" id="edit-expense-id">
             <input type="hidden" name="account_id" id="edit-account-id">
-            
+
             <x-input label="Nom" name="edit_name" required />
-            
+
             <x-input label="Description" name="edit_description" />
-            
+
             <x-input label="Montant (€)" name="edit_amount" type="number" step="0.01" required />
-            
+
             <div class="grid grid-cols-2 gap-4">
                 <x-input label="Date début" name="edit_date_start" type="date" required />
                 <x-input label="Date fin" name="edit_date_end" type="date" />
             </div>
-            
+
             <div class="space-y-2">
                 <label class="flex items-center gap-2 cursor-pointer">
                     <input type="checkbox" name="recurring" id="edit-recurring-checkbox" class="w-4 h-4 rounded bg-white/10 border-white/20 text-budgie-accent focus:ring-budgie-accent">
                     <span class="text-sm text-budgie-muted">Dépense récurrente</span>
                 </label>
             </div>
-            
+
             <div id="edit-recurring-options" class="hidden">
                 <label class="block text-sm text-budgie-muted mb-2">Fréquence</label>
-                <select name="value_recurring" id="edit-value-recurring" class="w-full px-4 py-2.5 bg-white/[0.06] border border-white/10 rounded-lg text-budgie-text focus:outline-none focus:ring-2 focus:ring-budgie-accent focus:border-transparent transition-all">
-                    <option value="">Sélectionner...</option>
-                    <option value="WEEKLY">Toutes les semaines</option>
-                    <option value="MONTHLY">Tous les mois</option>
-                    <option value="YEARLY">Tous les ans</option>
+                <select name="value_recurring" class="w-full px-4 py-2.5 bg-white/[0.06] border border-white/10 rounded-lg text-budgie-text focus:outline-none focus:ring-2 focus:ring-budgie-accent focus:border-transparent transition-all">
+                    <option value="" class="bg-budgie-card text-budgie-text">Sélectionner...</option>
+                    <option value="WEEKLY" class="bg-budgie-card text-budgie-text">Toutes les semaines</option>
+                    <option value="MONTHLY" class="bg-budgie-card text-budgie-text">Tous les mois</option>
+                    <option value="YEARLY" class="bg-budgie-card text-budgie-text">Tous les ans</option>
                 </select>
             </div>
-            
+
             <div class="flex justify-between pt-4">
                 <button type="button" onclick="deleteExpense()" class="px-4 py-2.5 rounded-full font-medium transition-all duration-200 bg-budgie-danger text-white hover:opacity-90">
                     Supprimer
@@ -219,7 +221,7 @@
     document.getElementById('recurring-checkbox').addEventListener('change', function() {
         document.getElementById('recurring-options').classList.toggle('hidden', !this.checked);
     });
-    
+
     document.getElementById('edit-recurring-checkbox').addEventListener('change', function() {
         document.getElementById('edit-recurring-options').classList.toggle('hidden', !this.checked);
     });
@@ -229,36 +231,39 @@
         document.getElementById('modal-new-expense').classList.remove('hidden');
         document.getElementById('modal-new-expense').classList.add('flex');
     }
-    
+
     function closeModal() {
         document.getElementById('modal-new-expense').classList.add('hidden');
         document.getElementById('modal-new-expense').classList.remove('flex');
         document.getElementById('form-new-expense').reset();
         document.getElementById('recurring-options').classList.add('hidden');
     }
-    
+
     // Modal Éditer dépense
     function openEditModal(id, accountId, name, description, recurring, valueRecurring, amount, dateStart, dateEnd) {
         document.getElementById('edit-expense-id').value = id;
         document.getElementById('edit-account-id').value = accountId;
-        document.getElementById('edit_name').value = name;
-        document.getElementById('edit_description').value = description || '';
-        document.getElementById('edit_amount').value = amount;
-        document.getElementById('edit_date_start').value = dateStart;
-        document.getElementById('edit_date_end').value = dateEnd;
+
+        const form = document.getElementById('form-edit-expense');
+        form.querySelector('[name="edit_name"]').value = name;
+        form.querySelector('[name="edit_description"]').value = description || '';
+        form.querySelector('[name="edit_amount"]').value = amount;
+        form.querySelector('[name="edit_date_start"]').value = dateStart;
+        form.querySelector('[name="edit_date_end"]').value = dateEnd || '';
+        form.querySelector('[name="value_recurring"]').value = valueRecurring || '';
+
         document.getElementById('edit-recurring-checkbox').checked = recurring;
-        document.getElementById('edit-value-recurring').value = valueRecurring || '';
         document.getElementById('edit-recurring-options').classList.toggle('hidden', !recurring);
-        
+
         document.getElementById('modal-edit-expense').classList.remove('hidden');
         document.getElementById('modal-edit-expense').classList.add('flex');
     }
-    
+
     function closeEditModal() {
         document.getElementById('modal-edit-expense').classList.add('hidden');
         document.getElementById('modal-edit-expense').classList.remove('flex');
     }
-    
+
     // Fermer modals sur clic extérieur
     ['modal-new-expense', 'modal-edit-expense'].forEach(modalId => {
         document.getElementById(modalId).addEventListener('click', function(e) {
@@ -268,21 +273,21 @@
             }
         });
     });
-    
+
     // Soumission du formulaire de création
     document.getElementById('form-new-expense').addEventListener('submit', async function(e) {
         e.preventDefault();
-        
+
         const submitBtn = document.getElementById('submit-new-expense');
         const cancelBtn = document.getElementById('cancel-new-expense');
         const formData = new FormData(this);
         const accountId = formData.get('account_id');
-        
+
         if (!accountId) {
             alert('Veuillez sélectionner un compte.');
             return;
         }
-        
+
         const data = {
             name: formData.get('name'),
             description: formData.get('description'),
@@ -292,7 +297,7 @@
             recurring: formData.has('recurring'),
             value_recurring: formData.get('value_recurring') || null,
         };
-        
+
         try {
             submitBtn.disabled = true;
             cancelBtn.disabled = true;
@@ -306,7 +311,7 @@
                 },
                 body: JSON.stringify(data),
             });
-            
+
             if (response.ok) {
                 window.location.reload();
             } else {
@@ -318,26 +323,28 @@
             alert('Erreur lors de la création de la dépense.');
         }
     });
-    
+
     // Soumission du formulaire de modification
     document.getElementById('form-edit-expense').addEventListener('submit', async function(e) {
         e.preventDefault();
-        
+
         const submitBtn = document.querySelector('#form-edit-expense button[type="submit"]');
         const cancelBtn = document.querySelector('#form-edit-expense button[type="button"]');
-        const formData = new FormData(this);
-        const expenseId = formData.get('expense_id');
-        const accountId = formData.get('account_id');
+
+        const form = this;
+        const expenseId = document.getElementById('edit-expense-id').value;
+        const accountId = document.getElementById('edit-account-id').value;
+
         const data = {
-            name: formData.get('edit_name'),
-            description: formData.get('edit_description'),
-            amount: parseFloat(formData.get('edit_amount')),
-            date_start: formData.get('edit_date_start'),
-            date_end: formData.get('edit_date_end') || null,
-            recurring: formData.has('recurring'),
-            value_recurring: formData.get('value_recurring') || null,
+            name: form.querySelector('[name="edit_name"]').value,
+            description: form.querySelector('[name="edit_description"]').value,
+            amount: parseFloat(form.querySelector('[name="edit_amount"]').value),
+            date_start: form.querySelector('[name="edit_date_start"]').value,
+            date_end: form.querySelector('[name="edit_date_end"]').value || null,
+            recurring: document.getElementById('edit-recurring-checkbox').checked,
+            value_recurring: form.querySelector('[name="value_recurring"]').value || null,
         };
-        
+
         try {
             submitBtn.disabled = true;
             if (cancelBtn) cancelBtn.disabled = true;
@@ -351,7 +358,7 @@
                 },
                 body: JSON.stringify(data),
             });
-            
+
             if (response.ok) {
                 window.location.reload();
             } else {
@@ -369,14 +376,14 @@
             submitBtn.innerHTML = 'Enregistrer';
         }
     });
-    
+
     // Suppression d'une dépense
     async function deleteExpense() {
         if (!confirm('Êtes-vous sûr de vouloir supprimer cette dépense ?')) return;
-        
+
         const expenseId = document.getElementById('edit-expense-id').value;
         const accountId = document.getElementById('edit-account-id').value;
-        
+
         try {
             const response = await fetch(`/comptes/${accountId}/depenses/${expenseId}`, {
                 method: 'DELETE',
@@ -385,7 +392,7 @@
                     'Accept': 'application/json',
                 },
             });
-            
+
             if (response.ok) {
                 window.location.reload();
             } else {
@@ -397,12 +404,12 @@
             alert('Erreur lors de la suppression de la dépense.');
         }
     }
-    
+
     // Recherche/filtre
     document.getElementById('search-expenses').addEventListener('input', function(e) {
         const query = e.target.value.toLowerCase();
         const rows = document.querySelectorAll('#expenses-table tbody tr[data-expense-id]');
-        
+
         rows.forEach(row => {
             const text = row.textContent.toLowerCase();
             if (text.includes(query)) {
