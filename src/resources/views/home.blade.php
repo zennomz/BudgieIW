@@ -22,16 +22,8 @@
                 </p>
             </div>
 
-            <div class="flex items-center gap-3 flex-wrap pt-2">
-                <x-button variant="secondary" onclick="location.href='{{ route('home') }}'">
-                    Voir la démo
-                </x-button>
-            </div>
-
             <div class="flex items-center gap-3 pt-2">
                 <span class="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10">SSL</span>
-                <span class="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10">Sans pub</span>
-                <span class="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10">Export CSV</span>
             </div>
         </div>
 
@@ -49,19 +41,11 @@
             </x-card>
 
             <!-- Cash / Investi -->
-            <div class="grid grid-cols-2 gap-3">
-                <x-card :padded="false" class="p-4">
-                    <h4 class="text-xs font-semibold uppercase tracking-wider text-budgie-muted mb-1.5">Cash</h4>
-                    <p class="text-lg font-bold">{{ number_format($cash, 2, ',', ' ') }} €</p>
-                    <span class="text-xs text-budgie-muted">Comptes à vue</span>
-                </x-card>
-
-                <x-card :padded="false" class="p-4">
-                    <h4 class="text-xs font-semibold uppercase tracking-wider text-budgie-muted mb-1.5">Investi</h4>
-                    <p class="text-lg font-bold">{{ number_format($investi, 2, ',', ' ') }} €</p>
-                    <span class="text-xs text-budgie-muted">Comptes rémunérés</span>
-                </x-card>
-            </div>
+            <x-card :padded="false" class="p-4">
+                <h4 class="text-xs font-semibold uppercase tracking-wider text-budgie-muted mb-1.5">Investi</h4>
+                <p class="text-lg font-bold">{{ number_format($investi, 2, ',', ' ') }} €</p>
+                <span class="text-xs text-budgie-muted">Comptes rémunérés</span>
+            </x-card>
 
             <!-- Mouvements récents -->
             <x-card :padded="false" class="p-4">
