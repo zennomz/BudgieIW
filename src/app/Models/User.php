@@ -18,6 +18,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'plan',
         'token',
         'verification_token',
         'is_active',
@@ -39,5 +40,13 @@ class User extends Authenticatable
     public function accounts()
     {
         return $this->hasMany(Account::class);
+    }
+
+    /**
+     * premium ou gratos ?
+     */
+    public function isPremium(): bool
+    {
+        return $this->plan === 'premium';
     }
 }

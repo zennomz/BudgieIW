@@ -59,6 +59,11 @@ class IncomeController extends Controller
             return response()->json(['error' => 'Accès non autorisé.'], 403);
         }
         
+        //  2 revenus par compte
+        if (!$user->isPremium() && $account->incomes()->count() >= 2) {
+            return response()->json(['message' => 'Limite du plan gratuit atteinte (2 revenus par compte). Passez Premium pour en ajouter davantage.'], 403);
+        }
+
         $recurringValues = ['MONTHLY', 'WEEKLY', 'YEARLY'];
 
         $data = $request->validate([
