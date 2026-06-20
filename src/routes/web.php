@@ -7,6 +7,7 @@ use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\PrevisionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])
@@ -45,6 +46,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/comptes/{account}/revenus/{income}', [IncomeController::class, 'destroy'])->name('incomes.destroy');
     Route::get('/previsions', [PrevisionController::class, 'overview'])->name('previsions.overview');
     Route::get('/comptes/{account}/previsions', [PrevisionController::class, 'index'])->name('previsions.index');
+
+    Route::get('/abonnement', [SubscriptionController::class, 'index'])->name('subscription.index');
+    Route::post('/abonnement/checkout', [SubscriptionController::class, 'checkout'])->name('subscription.checkout');
+    Route::get('/abonnement/succes', [SubscriptionController::class, 'success'])->name('subscription.success');
+    Route::get('/abonnement/annule', [SubscriptionController::class, 'cancel'])->name('subscription.cancel');
+    Route::post('/abonnement/gratuit', [SubscriptionController::class, 'downgrade'])->name('subscription.downgrade');
 
     Route::middleware('admin')->group(function () {
         Route::get('/admin', [AdminController::class, 'indexAll'])->name('admin');

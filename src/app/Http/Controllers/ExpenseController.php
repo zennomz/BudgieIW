@@ -58,6 +58,11 @@ class ExpenseController extends Controller
             return response()->json(['error' => 'Accès non autorisé.'], 403);
         }
         
+        //  7 dépenses par compte
+        if (!$user->isPremium() && $account->expenses()->count() >= 7) {
+            return response()->json(['message' => 'Limite du plan gratuit atteinte (7 dépenses par compte). Passez Premium pour en ajouter davantage.'], 403);
+        }
+
         $recurringValues = ['MONTHLY', 'WEEKLY', 'YEARLY'];
 
         $data = $request->validate([

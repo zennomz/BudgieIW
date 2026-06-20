@@ -49,6 +49,12 @@ class AccountController extends Controller
         if (!$user) {
             return response()->json(['error' => 'Accès refusé.'], 401);
         }
+
+        //    2 comptes maxx
+        if (!$user->isPremium() && Account::where('user_id', $user->id)->count() >= 2) {
+            return response()->json(['message' => 'Limite du plan gratuit atteinte (2 comptes). Passez Premium pour en créer davantage.'], 403);
+        }
+
         $data = $request->validate([
             'name' => ['required', 'string', 'max:100'],
             'description' => ['nullable', 'string'],
