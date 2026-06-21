@@ -39,7 +39,7 @@ class AccountController extends Controller
                 'balance' => $incomeTotal - $expenseTotal,
             ];
         });
-        
+
         return view('accounts.index', ['accounts' => $result]);
     }
 
@@ -52,7 +52,7 @@ class AccountController extends Controller
 
         //    2 comptes maxx
         if (!$user->isPremium() && Account::where('user_id', $user->id)->count() >= 2) {
-            return response()->json(['message' => 'Limite du plan gratuit atteinte (2 comptes). Passez Premium pour en créer davantage.'], 403);
+            return response()->json(['message' => 'Limite du plan gratuit atteinte (2 comptes). Passez à un compte Premium pour en créer davantage.'], 403);
         }
 
         $data = $request->validate([
@@ -93,12 +93,12 @@ class AccountController extends Controller
 
         $incomeTotal = Income::where('account_id', $account->id)->sum('amount');
         $expenseTotal = Expense::where('account_id', $account->id)->sum('amount');
-        
+
         $incomes = Income::where('account_id', $account->id)
             ->orderByDesc('date_start')
             ->take(5)
             ->get();
-            
+
         $expenses = Expense::where('account_id', $account->id)
             ->orderByDesc('date_start')
             ->take(5)

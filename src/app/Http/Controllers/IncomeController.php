@@ -16,7 +16,7 @@ class IncomeController extends Controller
             return response()->json(['error' => 'Accès non autorisé.'], 403);
         }
         $incomes = $account->incomes()->orderByDesc('date_start')->orderByDesc('id')->get();
-        
+
         return view('incomes.index', [
             'account' => $account,
             'incomes' => $incomes,
@@ -32,7 +32,7 @@ class IncomeController extends Controller
 
         $accounts = Account::where('user_id', $user->id)->get();
         $accountIds = $accounts->pluck('id');
-        
+
         $incomes = Income::whereIn('account_id', $accountIds)
             ->with('account')
             ->orderByDesc('date_start')
@@ -58,10 +58,10 @@ class IncomeController extends Controller
         if ($account->user_id !== $user->id) {
             return response()->json(['error' => 'Accès non autorisé.'], 403);
         }
-        
+
         //  2 revenus par compte
         if (!$user->isPremium() && $account->incomes()->count() >= 2) {
-            return response()->json(['message' => 'Limite du plan gratuit atteinte (2 revenus par compte). Passez Premium pour en ajouter davantage.'], 403);
+            return response()->json(['message' => 'Limite du plan gratuit atteinte (2 revenus par compte). Passez à un compte Premium pour en ajouter davantage.'], 403);
         }
 
         $recurringValues = ['MONTHLY', 'WEEKLY', 'YEARLY'];
@@ -77,7 +77,7 @@ class IncomeController extends Controller
         ]);
 
         $data['account_id'] = $account->id;
-        
+
         if (empty($data['recurring'])) {
             $data['value_recurring'] = null;
         }
@@ -91,7 +91,7 @@ class IncomeController extends Controller
         if ($account->user_id !== $user->id || $income->account_id !== $account->id) {
             return response()->json(['error' => 'Accès non autorisé.'], 403);
         }
-        
+
         $recurringValues = ['MONTHLY', 'WEEKLY', 'YEARLY'];
         $data = $request->validate([
             'name' => ['sometimes','string','max:100'],
@@ -115,7 +115,7 @@ class IncomeController extends Controller
         if ($account->user_id !== $user->id || $income->account_id !== $account->id) {
             return response()->json(['error' => 'Accès non autorisé.'], 403);
         }
-        
+
         $income->delete();
         return response()->json(null, 204);
     }

@@ -16,6 +16,7 @@
             @endif
         </p>
     </div>
+    <br>
 
     <!-- Messages flash -->
     @if(session('status'))
@@ -49,7 +50,7 @@
         <!-- Premium -->
         <x-card class="flex flex-col border-budgie-accent/40">
             <h2 class="text-xl font-bold mb-1">Premium</h2>
-            <p class="text-3xl font-bold mb-4">4,99 € <span class="text-base font-normal text-budgie-muted">/ mois</span></p>
+            <p class="text-3xl font-bold mb-4">19,00 € <span class="text-base font-normal text-budgie-muted">/ mois</span></p>
             <ul class="space-y-2 text-sm text-budgie-muted mb-6 flex-1">
                 <li>✓ Comptes illimités</li>
                 <li>✓ Dépenses illimitées</li>
@@ -65,9 +66,5 @@
             @endif
         </x-card>
     </div>
-
-    <p class="text-center text-xs text-budgie-muted mt-8">
-        Paiement sécurisé via Stripe. En mode test, utilisez la carte <span class="font-mono">4242 4242 4242 4242</span>, une date future et n'importe quel CVC.
-    </p>
 </div>
 @endsection
