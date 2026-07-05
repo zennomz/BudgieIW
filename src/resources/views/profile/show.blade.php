@@ -90,9 +90,11 @@
                 Plan actuel : Gratuit
             </p>
 
-            <x-button variant="secondary" type="button">
-                Voir les offres
-            </x-button>
+            <a href="{{ route('subscription.index') }}">
+                <x-button variant="secondary" type="button">
+                    Voir les offres
+                </x-button>
+            </a>
         </x-card>
     </div>
 </div>
