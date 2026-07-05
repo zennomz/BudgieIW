@@ -18,7 +18,6 @@
             <div class="flex items-center justify-between h-16">
                 <!-- Logo -->
                 <a href="{{ route('home') }}" class="flex items-center gap-2.5">
-                    <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-budgie-accent to-budgie-accent-2 shadow-budgie"></div>
                     <strong class="text-lg font-bold tracking-tight">Budgie</strong>
                 </a>
 
