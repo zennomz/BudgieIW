@@ -43,4 +43,30 @@ class Account extends Model
     {
         return $this->hasMany(Expense::class);
     }
+
+    public function shares()
+    {
+        return $this->hasMany(AccountShare::class);
+    }
+
+    public function isOwnedBy(?User $user): bool
+    {
+        return $user !== null && $this->user_id === $user->id;
+    }
+
+    public function isAccessibleBy(?User $user): bool
+    {
+        if ($user === null) {
+            return false;
+        }
+
+        if ($this->isOwnedBy($user)) {
+            return true;
+        }
+
+        return $this->shares()
+            ->where('user_id', $user->id)
+            ->where('status', AccountShare::STATUS_ACCEPTED)
+            ->exists();
+    }
 }

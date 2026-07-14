@@ -39,6 +39,42 @@ function confirmAccountMail($sendTo, $token)
     }
 }
 
+function shareAccountMail($sendTo, $accountName, $ownerName, $token)
+{
+    $mail = new PHPMailer(true);
+
+    try {
+
+        $mail->CharSet = 'UTF-8';
+
+        $mail->isSMTP();
+        $mail->Timeout = 5;
+        $mail->SMTPKeepAlive = false;
+
+        $mail->Host = "mailhog";
+        $mail->Port = "1025";
+        $mail->SMTPAuth = false;
+
+        $link = config('app.url') . "/partages/accepter?email=" . urlencode($sendTo) . "&token=" . urlencode($token);
+        $body = "Bonjour,<br>$ownerName souhaite partager avec vous la visibilité (lecture seule) de son compte <strong>$accountName</strong> sur Budgie.<br><br>Cliquez ici pour accepter l'invitation : <a href='$link'>Accepter le partage</a><br><br>Si vous ne connaissez pas cette personne, ignorez cet email.";
+
+        $mail->setFrom("noreply@budgie.com", "Budgie");
+        $mail->Subject = 'Invitation à partager un compte Budgie';
+        $mail->addAddress($sendTo);
+        $mail->Body = $body;
+        $mail->isHTML(true);
+
+        $mail->send();
+
+        return "Succes : Mail envoyé";
+
+    } catch (PHPMailerException $e) {
+
+        return "Erreur :" . $e->getMessage();
+
+    }
+}
+
 function resetPasswordMail($sendTo, $token)
 {
 

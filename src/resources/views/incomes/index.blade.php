@@ -27,9 +27,11 @@
             </div>
 
             <!-- Bouton Nouveau revenu -->
-            <x-button variant="primary" onclick="openModal()">
-                Nouveau revenu
-            </x-button>
+            @if($is_owner)
+                <x-button variant="primary" onclick="openModal()">
+                    Nouveau revenu
+                </x-button>
+            @endif
         </div>
     </div>
 
@@ -82,9 +84,11 @@
                             @endif
                         </td>
                         <td class="px-8 py-5 text-right">
-                            <x-button variant="secondary" onclick="openEditModal({{ $income->id }}, {{ json_encode($income->name) }}, {{ json_encode($income->description ?? '') }}, {{ $income->recurring ? 'true' : 'false' }}, {{ json_encode($income->value_recurring ?? '') }}, {{ $income->amount }}, {{ json_encode($income->date_start ? $income->date_start->format('Y-m-d') : '') }}, {{ json_encode($income->date_end ? $income->date_end->format('Y-m-d') : '') }})">
-                                Éditer
-                            </x-button>
+                            @if($is_owner)
+                                <x-button variant="secondary" onclick="openEditModal({{ $income->id }}, {{ json_encode($income->name) }}, {{ json_encode($income->description ?? '') }}, {{ $income->recurring ? 'true' : 'false' }}, {{ json_encode($income->value_recurring ?? '') }}, {{ $income->amount }}, {{ json_encode($income->date_start ? $income->date_start->format('Y-m-d') : '') }}, {{ json_encode($income->date_end ? $income->date_end->format('Y-m-d') : '') }})">
+                                    Éditer
+                                </x-button>
+                            @endif
                         </td>
                     </tr>
                 @empty
