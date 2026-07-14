@@ -43,6 +43,15 @@ class User extends Authenticatable
     }
 
     /**
+     * Comptes partagés avec cet utilisateur (accès en lecture seule).
+     */
+    public function sharedAccounts()
+    {
+        return $this->belongsToMany(Account::class, 'account_shares')
+            ->wherePivot('status', AccountShare::STATUS_ACCEPTED);
+    }
+
+    /**
      * premium ou gratos ?
      */
     public function isPremium(): bool

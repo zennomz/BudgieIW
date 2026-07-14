@@ -9,17 +9,23 @@ use Illuminate\Validation\Rule;
 
 class ExpenseController extends Controller
 {
-    public function index(Account $account)
+    public function index(Request $request, Account $account)
     {
         $user = auth()->user();
-        if ($account->user_id !== $user->id) {
-            return response()->json(['error' => 'Accès non autorisé.'], 403);
+        if (!$account->isAccessibleBy($user)) {
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Accès non autorisé.'], 403);
+            }
+            return response()->view('accounts.share-failed', [
+                'message' => "Vous n'avez plus accès à ce compte (le partage a peut-être été révoqué).",
+            ], 403);
         }
         $expenses = $account->expenses()->orderByDesc('date_start')->orderByDesc('id')->get();
 
         return view('expenses.index', [
             'account' => $account,
             'expenses' => $expenses,
+            'is_owner' => $account->isOwnedBy($user),
         ]);
     }
 

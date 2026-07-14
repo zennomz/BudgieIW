@@ -19,6 +19,13 @@
                 />
             </div>
 
+            <!-- Comptes partagés avec moi -->
+            <a href="{{ route('accounts.shared') }}">
+                <x-button variant="secondary">
+                    Partagés avec moi
+                </x-button>
+            </a>
+
             <!-- Bouton Nouveau compte -->
             <x-button variant="primary" onclick="openModal()">
                 Nouveau compte

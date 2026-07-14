@@ -58,8 +58,13 @@ class PrevisionController extends Controller
     public function index(Request $request, Account $account, PrevisionService $service)
     {
         $user = auth()->user();
-        if (!$user || $account->user_id !== $user->id) {
-            return response()->json(['error' => 'Accès non autorisé.'], 403);
+        if (!$account->isAccessibleBy($user)) {
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Accès non autorisé.'], 403);
+            }
+            return response()->view('accounts.share-failed', [
+                'message' => "Vous n'avez plus accès à ce compte (le partage a peut-être été révoqué).",
+            ], 403);
         }
 
         $mois = $this->moisChoisi($request);

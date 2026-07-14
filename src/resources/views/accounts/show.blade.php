@@ -29,14 +29,20 @@
                 @endif
             </p>
         </div>
-        <div class="flex items-center gap-2">
-            <x-button variant="secondary" onclick="openEditModal()">
-                Modifier
-            </x-button>
-            <x-button variant="secondary" onclick="confirmDelete()">
-                Supprimer
-            </x-button>
-        </div>
+        @if($is_owner)
+            <div class="flex items-center gap-2">
+                <x-button variant="secondary" onclick="openEditModal()">
+                    Modifier
+                </x-button>
+                <x-button variant="secondary" onclick="confirmDelete()">
+                    Supprimer
+                </x-button>
+            </div>
+        @else
+            <span class="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider bg-budgie-accent/20 text-budgie-accent rounded-full">
+                Partagé avec vous · lecture seule
+            </span>
+        @endif
     </div>
 
     <!-- Statistiques -->
@@ -131,6 +137,47 @@
             @endif
         </x-card>
     </div>
+
+    @if($is_owner)
+        <!-- Partage du compte -->
+        <x-card class="mb-12">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold">Partage</h3>
+            </div>
+
+            <form id="form-share-account" class="flex items-end gap-3 mb-6">
+                @csrf
+                <div class="flex-1">
+                    <x-input label="Adresse email à inviter" name="email" type="email" required placeholder="ex: prenom.nom@email.com" />
+                </div>
+                <x-button variant="primary" type="submit">
+                    Inviter
+                </x-button>
+            </form>
+
+            <div id="shares-list" class="space-y-3">
+                @forelse($shares as $share)
+                    <div class="flex items-center justify-between py-2 border-b border-white/5 last:border-0" data-share-id="{{ $share->id }}">
+                        <div>
+                            <p class="font-medium">{{ $share->email }}</p>
+                            <p class="text-sm text-budgie-muted">
+                                @if($share->status === 'accepted')
+                                    <span class="text-budgie-success">Accès actif</span>
+                                @else
+                                    <span class="text-budgie-muted">Invitation en attente</span>
+                                @endif
+                            </p>
+                        </div>
+                        <button onclick="revokeShare({{ $share->id }})" class="text-sm text-budgie-danger hover:underline">
+                            Révoquer
+                        </button>
+                    </div>
+                @empty
+                    <p class="text-budgie-muted text-center py-4">Ce compte n'est partagé avec personne.</p>
+                @endforelse
+            </div>
+        </x-card>
+    @endif
 
     <!-- Actions rapides -->
     <div class="flex items-center justify-center gap-4">
@@ -281,6 +328,67 @@
         }
     });
     
+    @if($is_owner)
+    // Invitation de partage
+    document.getElementById('form-share-account').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+            submitBtn.disabled = true;
+            const response = await fetch('{{ route("accounts.shares.store", $account->id) }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                const errorData = await response.json();
+                alert(errorData.message || 'Erreur lors de l\'envoi de l\'invitation.');
+                submitBtn.disabled = false;
+            }
+        } catch (error) {
+            console.error('Erreur:', error);
+            alert('Erreur lors de l\'envoi de l\'invitation.');
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Révocation d'un partage
+    async function revokeShare(shareId) {
+        if (!confirm('Révoquer l\'accès de cet utilisateur à ce compte ?')) return;
+
+        try {
+            const response = await fetch(`/comptes/{{ $account->id }}/partages/${shareId}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                const errorData = await response.json();
+                alert(errorData.message || 'Erreur lors de la révocation du partage.');
+            }
+        } catch (error) {
+            console.error('Erreur:', error);
+            alert('Erreur lors de la révocation du partage.');
+        }
+    }
+    @endif
+
     // Suppression du compte
     async function deleteAccount() {
         try {

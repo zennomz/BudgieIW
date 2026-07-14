@@ -84,11 +84,16 @@ class AccountController extends Controller
         return response()->json($account);
     }
 
-    public function show(Account $account)
+    public function show(Request $request, Account $account)
     {
         $user = auth()->user();
-        if (!$user || $account->user_id !== $user->id) {
-            return response()->json(['error' => 'Accès refusé.'], 403);
+        if (!$account->isAccessibleBy($user)) {
+            if ($request->wantsJson()) {
+                return response()->json(['error' => 'Accès refusé.'], 403);
+            }
+            return response()->view('accounts.share-failed', [
+                'message' => "Vous n'avez plus accès à ce compte (le partage a peut-être été révoqué).",
+            ], 403);
         }
 
         $incomeTotal = Income::where('account_id', $account->id)->sum('amount');
@@ -104,6 +109,8 @@ class AccountController extends Controller
             ->take(5)
             ->get();
 
+        $isOwner = $account->isOwnedBy($user);
+
         return view('accounts.show', [
             'account' => $account,
             'income_total' => $incomeTotal,
@@ -111,6 +118,8 @@ class AccountController extends Controller
             'balance' => $incomeTotal - $expenseTotal,
             'incomes' => $incomes,
             'expenses' => $expenses,
+            'is_owner' => $isOwner,
+            'shares' => $isOwner ? $account->shares()->where('status', '!=', \App\Models\AccountShare::STATUS_REVOKED)->get() : collect(),
         ]);
     }
 

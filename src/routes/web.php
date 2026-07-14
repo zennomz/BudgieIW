@@ -8,6 +8,7 @@ use App\Http\Controllers\PrevisionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\AccountShareController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])
@@ -33,9 +34,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/comptes', [AccountController::class, 'store'])->name('accounts.store');
     Route::get('/comptes/expenses', [ExpenseController::class, 'userExpenses'])->name('expenses.userExpenses');
     Route::get('/comptes/incomes', [IncomeController::class, 'userIncomes'])->name('incomes.userIncomes');
+    Route::get('/comptes/partages', [AccountShareController::class, 'shared'])->name('accounts.shared');
+    Route::get('/partages/accepter', [AccountShareController::class, 'accept'])->name('shares.accept');
     Route::put('/comptes/{account}', [AccountController::class, 'update'])->name('accounts.update');
     Route::get('/comptes/{account}', [ AccountController::class, 'show'])->name('accounts.show');
     Route::delete('/comptes/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
+    Route::post('/comptes/{account}/partages', [AccountShareController::class, 'store'])->name('accounts.shares.store');
+    Route::delete('/comptes/{account}/partages/{share}', [AccountShareController::class, 'destroy'])->name('accounts.shares.destroy');
     Route::get('/comptes/{account}/depenses', [ExpenseController::class, 'index'])->name('expenses.index');
     Route::post('/comptes/{account}/depenses', [ExpenseController::class, 'store'])->name('expenses.store');
     Route::put('/comptes/{account}/depenses/{expense}', [ExpenseController::class, 'update'])->name('expenses.update');
