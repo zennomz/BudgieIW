@@ -40,18 +40,21 @@
                 <div>
                     <h3 class="text-lg font-semibold mb-1">{{ $account['name'] }}</h3>
                     <p class="text-sm text-budgie-muted mb-4">
+                        {{ $account['description'] ?? 'Compte courant' }}
+
                         @if($account['rate_remuneration'] || $account['rate_imposition'])
-                            @if($account['rate_remuneration'])
-                                Taux {{ number_format($account['rate_remuneration'], 1, ',', ' ') }}%
-                            @endif
-                            @if($account['rate_remuneration'] && $account['rate_imposition'])
-                                -
-                            @endif
-                            @if($account['rate_imposition'])
-                                Impôt {{ number_format($account['rate_imposition'], 0, ',', ' ') }}%
-                            @endif
-                        @else
-                            {{ $account['description'] ?? 'Compte courant' }}
+                            <br>
+                            <span class="text-xs opacity-75">
+                                @if($account['rate_remuneration'])
+                                    Taux {{ number_format($account['rate_remuneration'], 1, ',', ' ') }}%
+                                @endif
+                                @if($account['rate_remuneration'] && $account['rate_imposition'])
+                                    -
+                                @endif
+                                @if($account['rate_imposition'])
+                                    Impôt {{ number_format($account['rate_imposition'], 0, ',', ' ') }}%
+                                @endif
+                            </span>
                         @endif
                     </p>
                 </div>
@@ -186,8 +189,9 @@
         const cards = document.querySelectorAll('#accounts-grid > div');
 
         cards.forEach(card => {
-            const text = card.textContent.toLowerCase();
-            if (text.includes(query)) {
+            const accountName = card.querySelector('h3').textContent.toLowerCase();
+            const accountDesc = card.querySelector('p').textContent.toLowerCase();
+            if (accountName.includes(query) || accountDesc.includes(query)) {
                 card.style.display = '';
             } else {
                 card.style.display = 'none';

@@ -49,7 +49,10 @@
             <tbody>
                 @forelse($expenses as $expense)
                     <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors" data-expense-id="{{ $expense->id }}" data-account-id="{{ $expense->account_id }}">
-                        <td class="px-8 py-5 font-medium">{{ $expense->name }}</td>
+                        <td class="px-8 py-5 font-medium">
+                            <div>{{ $expense->name }}</div>
+                            <div class="text-xs text-budgie-muted font-normal mt-1 whitespace-normal break-words max-w-[180px]">{{ $expense->description }}</div>
+                        </td>
                         <td class="px-8 py-5 text-budgie-muted">{{ $expense->account->name ?? 'N/A' }}</td>
                         <td class="px-8 py-5 text-budgie-muted">
                             @if($expense->recurring && $expense->value_recurring)
