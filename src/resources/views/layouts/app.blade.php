@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'Budgie - Gestion Budgétaire')</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90' font-family='sans-serif' fill='%2322c55e'>$</text></svg>">
     @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
 <body class="h-full bg-budgie-bg text-budgie-text">
