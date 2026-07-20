@@ -1,3 +1,19 @@
+FROM node:20-alpine AS frontend-builder
+
+WORKDIR /build
+
+COPY src/package*.json ./
+
+RUN npm ci
+
+COPY src/ .
+
+RUN rm -rf node_modules/.bin/vite
+
+RUN npm rebuild vite
+
+RUN npm run build
+
 FROM php:8.3-fpm
 
 WORKDIR /var/www
@@ -21,8 +37,11 @@ COPY src/composer.json src/composer.lock ./
 RUN composer install --no-scripts --no-autoloader --prefer-dist
 
 COPY src/ .
+COPY src/.env /var/www/.env
 
 RUN composer dump-autoload --optimize
+
+COPY --from=frontend-builder /build/public/build ./public/build
 
 RUN chown -R dev:www-data /var/www \
     && chmod -R 775 /var/www/storage \
