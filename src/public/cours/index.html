@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Budgie — Cours interactif de révision</title>
+  <meta name="description" content="Mini-site d'apprentissage du projet Budgie (Laravel) pour préparer la soutenance : parcours du code ligne par ligne, schémas, quiz, questions du prof, glossaire.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- En-tête -->
+  <header class="topbar">
+    <div class="topbar-row">
+      <div class="brand">
+        <span class="logo">🐦</span>
+        <span>Budgie <small>· Cours interactif de révision</small></span>
+      </div>
+      <div class="topbar-spacer"></div>
+      <div class="searchbox">
+        <input type="text" id="search" placeholder="Rechercher (explications, quiz, glossaire)…" aria-label="Rechercher">
+      </div>
+      <div class="progress-wrap" title="Progression (étapes marquées « compris »)">
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+        <span class="progress-label" id="progress-label">0%</span>
+      </div>
+      <button class="tbtn" id="theme-btn">☀️ Clair</button>
+      <button class="tbtn" id="print-btn">🖨️ Imprimer</button>
+    </div>
+    <!-- Sélecteur de fonctionnalités + sections -->
+    <div class="pills" id="pills"></div>
+  </header>
+
+  <!-- Zone principale (arborescence + contenu) -->
+  <main class="layout" id="layout"></main>
+
+  <!-- Contenu (chargé via <script src>, aucun fetch : fonctionne en file://) -->
+  <script src="js/content.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
