@@ -60,9 +60,6 @@
                                     @case('MONTHLY')
                                         Tous les 1 mois
                                         @break
-                                    @case('WEEKLY')
-                                        Toutes les semaines
-                                        @break
                                     @case('YEARLY')
                                         Tous les ans
                                         @break
@@ -144,8 +141,7 @@
                 <label class="block text-sm text-budgie-muted mb-2">Fréquence</label>
                 <select name="value_recurring" class="w-full px-4 py-2.5 bg-white/[0.06] border border-white/10 rounded-lg text-budgie-text focus:outline-none focus:ring-2 focus:ring-budgie-accent focus:border-transparent transition-all">
                     <option value="" class="bg-budgie-card text-budgie-text">Sélectionner...</option>
-                    <option value="WEEKLY" class="bg-budgie-card text-budgie-text">Toutes les semaines</option>
-                    <option value="MONTHLY" class="bg-budgie-card text-budgie-text">Tous les mois</option>
+*                    <option value="MONTHLY" class="bg-budgie-card text-budgie-text">Tous les mois</option>
                     <option value="YEARLY" class="bg-budgie-card text-budgie-text">Tous les ans</option>
                 </select>
             </div>
@@ -195,7 +191,6 @@
                 <label class="block text-sm text-budgie-muted mb-2">Fréquence</label>
                 <select name="value_recurring" class="w-full px-4 py-2.5 bg-white/[0.06] border border-white/10 rounded-lg text-budgie-text focus:outline-none focus:ring-2 focus:ring-budgie-accent focus:border-transparent transition-all">
                     <option value="" class="bg-budgie-card text-budgie-text">Sélectionner...</option>
-                    <option value="WEEKLY" class="bg-budgie-card text-budgie-text">Toutes les semaines</option>
                     <option value="MONTHLY" class="bg-budgie-card text-budgie-text">Tous les mois</option>
                     <option value="YEARLY" class="bg-budgie-card text-budgie-text">Tous les ans</option>
                 </select>
