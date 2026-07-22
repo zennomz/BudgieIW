@@ -83,7 +83,7 @@
                     <span class="text-xs text-budgie-muted">au {{ $dateCible->format('d/m/Y') }}</span>
                 </div>
                 <p class="text-sm text-budgie-muted mb-1">
-                    Solde net estimé : <strong class="text-base {{ $previsionTotal >= 0 ? 'text-budgie-text' : 'text-budgie-danger' }}">{{ number_format($previsionTotal, 2, ',', ' ') }} €</strong>
+                    Solde net estimé : <strong class="text-base {{ $prevision >= 0 ? 'text-budgie-text' : 'text-budgie-danger' }}">{{ number_format($prevision, 2, ',', ' ') }} €</strong>
                 </p>
                 <p class="text-xs text-budgie-muted mb-4">
                     Hypothèses : intérêts mensuels, revenus &amp; dépenses récurrentes.

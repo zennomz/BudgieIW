@@ -41,21 +41,22 @@ class HomeController extends Controller
             ->take(4)
             ->values();
 
-        // Prévision : solde net cumulé de tous les comptes au 31/12/2035
-        $dateCible = Carbon::create(2035, 12, 1);
-        $previsionTotal = 0.0;
+        // Prévision : solde net cumulé de tous les comptes à la fin d'année 31/12/2026
+        $dateCible = Carbon::now()->endOfYear();
+
+        $prevision = 0.0;
         foreach ($accounts as $account) {
-            $previsionTotal += $service->projectAccount($account, $dateCible)['total_final'];
+            $prevision += $service->projectAccount($account, $dateCible)['total_final'];
         }
 
         return view('home', [
-            'total'          => $total,
-            'cash'           => $cash,
-            'investi'        => $investi,
-            'accountsCount'  => $accounts->count(),
-            'movements'      => $movements,
-            'previsionTotal' => $previsionTotal,
-            'dateCible'      => $dateCible,
+            'total'         => $total,
+            'cash'          => $cash,
+            'investi'       => $investi,
+            'accountsCount' => $accounts->count(),
+            'movements'     => $movements,
+            'prevision'     => $prevision,
+            'dateCible'     => $dateCible,
         ]);
     }
 }
