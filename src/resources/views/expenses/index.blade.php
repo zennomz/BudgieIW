@@ -234,13 +234,21 @@
     // Modal Éditer dépense
     function openEditModal(id, name, description, recurring, valueRecurring, amount, dateStart, dateEnd) {
         document.getElementById('edit-expense-id').value = id;
-        document.getElementById('edit_name').value = name;
-        document.getElementById('edit_description').value = description || '';
-        document.getElementById('edit_amount').value = amount;
-        document.getElementById('edit_date_start').value = dateStart;
-        document.getElementById('edit_date_end').value = dateEnd;
+
+        const form = document.getElementById('form-edit-expense');
+        form.querySelector('[name="edit_name"]').value = name;
+        form.querySelector('[name="edit_description"]').value = description || '';
+        form.querySelector('[name="edit_amount"]').value = amount;
+        form.querySelector('[name="edit_date_start"]').value = dateStart;
+        form.querySelector('[name="edit_date_end"]').value = dateEnd || '';
+
+        // Cibler le select de récurrence dans le formulaire
+        const recurringSelect = form.querySelector('[name="value_recurring"]');
+        if (recurringSelect) {
+            recurringSelect.value = valueRecurring || '';
+        }
+
         document.getElementById('edit-recurring-checkbox').checked = recurring;
-        document.getElementById('edit-value-recurring').value = valueRecurring || '';
         document.getElementById('edit-recurring-options').classList.toggle('hidden', !recurring);
 
         document.getElementById('modal-edit-expense').classList.remove('hidden');
