@@ -12,7 +12,7 @@
             </h1>
 
             <p class="text-lg text-budgie-muted leading-relaxed">
-                Suivi des comptes, revenus, dépenses et prévisions — sans connecter ta banque.
+                Suivi des comptes, revenus, dépenses et prévisions sans connecter ta banque.
                 Inspiré par Finary, pensé pour la confidentialité.
             </p>
 
@@ -20,10 +20,6 @@
                 <p class="text-budgie-accent font-medium">
                     Bienvenue <strong>{{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</strong>
                 </p>
-            </div>
-
-            <div class="flex items-center gap-3 pt-2">
-                <span class="px-3 py-1 text-xs rounded-full bg-white/5 border border-white/10">SSL</span>
             </div>
         </div>
 

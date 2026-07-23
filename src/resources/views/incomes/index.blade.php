@@ -109,11 +109,11 @@
             @csrf
             <input type="hidden" name="account_id" value="{{ $account->id }}">
 
-            <x-input label="Nom" name="name" required placeholder="Ex: Salaire" />
+            <x-input label="Nom" name="name" required placeholder="Ex: Salaire" maxlength="100" />
 
             <x-input label="Description" name="description" placeholder="Ex: Salaire mensuel" />
 
-            <x-input label="Montant (€)" name="amount" type="number" step="0.01" required placeholder="Ex: 2500" />
+            <x-input label="Montant (€)" name="amount" type="number" step="0.01" required placeholder="Ex: 2500" max="999999999999.99" min="0"/>
 
             <div class="grid grid-cols-2 gap-4">
                 <x-input label="Date début" name="date_start" type="date" required />
@@ -158,11 +158,11 @@
             @method('PUT')
             <input type="hidden" name="income_id" id="edit-income-id">
 
-            <x-input label="Nom" name="edit_name" required />
+            <x-input label="Nom" name="edit_name" required maxlength="100" />
 
             <x-input label="Description" name="edit_description" />
 
-            <x-input label="Montant (€)" name="edit_amount" type="number" step="0.01" required />
+            <x-input label="Montant (€)" name="edit_amount" type="number" step="0.01" required max="999999999999.99" min="0"/>
 
             <div class="grid grid-cols-2 gap-4">
                 <x-input label="Date début" name="edit_date_start" type="date" required />

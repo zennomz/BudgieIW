@@ -53,14 +53,14 @@
                 {{ number_format($balance, 2, ',', ' ') }} €
             </p>
         </x-card>
-        
+
         <x-card>
             <h4 class="text-xs font-semibold uppercase tracking-wider text-budgie-muted mb-2">Total revenus</h4>
             <p class="text-2xl font-bold text-budgie-success">
                 +{{ number_format($income_total, 2, ',', ' ') }} €
             </p>
         </x-card>
-        
+
         <x-card>
             <h4 class="text-xs font-semibold uppercase tracking-wider text-budgie-muted mb-2">Total dépenses</h4>
             <p class="text-2xl font-bold text-budgie-danger">
@@ -79,7 +79,7 @@
                     Voir tout
                 </a>
             </div>
-            
+
             @if($incomes->count() > 0)
                 <div class="space-y-3">
                     @foreach($incomes as $income)
@@ -112,7 +112,7 @@
                     Voir tout
                 </a>
             </div>
-            
+
             @if($expenses->count() > 0)
                 <div class="space-y-3">
                     @foreach($expenses as $expense)
@@ -193,32 +193,38 @@
 <div id="modal-edit-account" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 backdrop-blur-sm">
     <div class="bg-budgie-card border border-white/10 rounded-budgie p-6 max-w-md w mx-4 shadow-budgie">
         <h2 class="text-xl font-bold mb-6">Modifier le compte</h2>
-        
+
         <form id="form-edit-account" class="space-y-4">
             @csrf
             @method('PUT')
-            <x-input label="Nom du compte" name="name" required :value="$account->name" />
-            
+            <x-input label="Nom du compte" name="name" required :value="$account->name" maxlength="100" />
+
             <x-input label="Description" name="description" :value="$account->description" />
-            
+
             <div class="grid grid-cols-2 gap-4">
-                <x-input 
-                    label="Taux de rémunération (%)" 
-                    name="rate_remuneration" 
-                    type="number" 
+                <x-input
+                    label="Taux de rémunération (%)"
+                    name="rate_remuneration"
+                    type="number"
                     step="0.01"
-                    :value="$account->rate_remuneration" 
+                    :value="$account->rate_remuneration"
+                    required
+                    min="0"
+                    max="100"
                 />
-                
-                <x-input 
-                    label="Taux d'imposition (%)" 
-                    name="rate_imposition" 
-                    type="number" 
+
+                <x-input
+                    label="Taux d'imposition (%)"
+                    name="rate_imposition"
+                    type="number"
                     step="0.01"
-                    :value="$account->rate_imposition" 
+                    :value="$account->rate_imposition"
+                    required
+                    min="0"
+                    max="100"
                 />
             </div>
-            
+
             <div class="flex justify-end gap-3 pt-4">
                 <x-button variant="secondary" type="button" onclick="closeEditModal()">
                     Annuler
@@ -236,15 +242,15 @@
     <div class="bg-budgie-card border border-white/10 rounded-budgie p-6 max-w-md shadow-budgie">
         <h2 class="text-xl font-bold mb-4 text-budgie-danger">Supprimer le compte</h2>
         <p class="text-budgie-muted mb-6">
-            Êtes-vous sûr de vouloir supprimer le compte <strong class="text-budgie-text">{{ $account->name }}</strong> ? 
+            Êtes-vous sûr de vouloir supprimer le compte <strong class="text-budgie-text">{{ $account->name }}</strong> ?
             Cette action est irréversible et supprimera également tous les revenus, dépenses et prévisions associés.
         </p>
-        
+
         <div class="flex justify-end gap-3">
             <x-button variant="secondary" type="button" onclick="closeDeleteModal()">
                 Annuler
             </x-button>
-            <button 
+            <button
                 onclick="deleteAccount()"
                 class="px-4 py-2.5 rounded-full font-medium transition-all duration-200 bg-budgie-danger text-white hover:opacity-90"
             >
@@ -260,23 +266,23 @@
         document.getElementById('modal-edit-account').classList.remove('hidden');
         document.getElementById('modal-edit-account').classList.add('flex');
     }
-    
+
     function closeEditModal() {
         document.getElementById('modal-edit-account').classList.add('hidden');
         document.getElementById('modal-edit-account').classList.remove('flex');
     }
-    
+
     // Modal Suppression
     function confirmDelete() {
         document.getElementById('modal-delete-account').classList.remove('hidden');
         document.getElementById('modal-delete-account').classList.add('flex');
     }
-    
+
     function closeDeleteModal() {
         document.getElementById('modal-delete-account').classList.add('hidden');
         document.getElementById('modal-delete-account').classList.remove('flex');
     }
-    
+
     // Fermer modals sur clic extérieur
     ['modal-edit-account', 'modal-delete-account'].forEach(modalId => {
         document.getElementById(modalId).addEventListener('click', function(e) {
@@ -286,16 +292,16 @@
             }
         });
     });
-    
+
     // Soumission du formulaire de modification
     document.getElementById('form-edit-account').addEventListener('submit', async function(e) {
         e.preventDefault();
-        
+
         const submitBtn = document.querySelector('#form-edit-account button[type="submit"]');
         const cancelBtn = document.querySelector('#form-edit-account button[type="button"]');
         const formData = new FormData(this);
         const data = Object.fromEntries(formData.entries());
-        
+
         try {
             submitBtn.disabled = true;
             if (cancelBtn) cancelBtn.disabled = true;
@@ -309,7 +315,7 @@
                 },
                 body: JSON.stringify(data),
             });
-            
+
             if (response.ok) {
                 window.location.reload();
             } else {
@@ -327,7 +333,7 @@
             submitBtn.innerHTML = 'Enregistrer';
         }
     });
-    
+
     @if($is_owner)
     // Invitation de partage
     document.getElementById('form-share-account').addEventListener('submit', async function(e) {
@@ -399,7 +405,7 @@
                     'Accept': 'application/json',
                 },
             });
-            
+
             if (response.ok) {
                 window.location.href = '{{ route("accounts.index") }}';
             } else {

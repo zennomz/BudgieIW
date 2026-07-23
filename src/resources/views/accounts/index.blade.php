@@ -88,7 +88,7 @@
 
         <form id="form-new-account" class="space-y-4">
             @csrf
-            <x-input label="Nom du compte" name="name" required placeholder="Ex: Société Générale" />
+            <x-input label="Nom du compte" name="name" required placeholder="Ex: Société Générale" maxlength="100" />
 
             <x-input label="Description" name="description" placeholder="Ex: Compte courant" />
 
@@ -99,6 +99,9 @@
                     type="number"
                     step="0.01"
                     placeholder="Ex: 1.7"
+                    required
+                    min="0"
+                    max="100"
                 />
 
                 <x-input
@@ -107,6 +110,9 @@
                     type="number"
                     step="0.01"
                     placeholder="Ex: 30"
+                    required
+                    min="0"
+                    max="100"
                 />
             </div>
 

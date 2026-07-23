@@ -28,6 +28,7 @@
                     type="text"
                     :value="old('firstname')"
                     placeholder="John"
+                    maxlength="80"
                 />
 
                 <x-input
@@ -36,6 +37,7 @@
                     type="text"
                     :value="old('lastname')"
                     placeholder="Doe"
+                    maxlength="80"
                 />
             </div>
 
@@ -47,6 +49,7 @@
                 :value="old('email')"
                 placeholder="vous@exemple.com"
                 required
+                maxlength="60"
             />
 
             <!-- Mots de passe -->
@@ -56,6 +59,7 @@
                 type="password"
                 placeholder="Minimum 8 caractères"
                 required
+                maxlength="255"
             />
 
             <x-input
@@ -64,6 +68,7 @@
                 type="password"
                 placeholder="Répétez votre mot de passe"
                 required
+                maxlength="255"
             />
 
             <!-- Date de naissance -->
@@ -81,6 +86,7 @@
                 type="tel"
                 :value="old('numero_phone')"
                 placeholder="+33 6 12 34 56 78"
+                maxlength="20"
             />
 
             <x-button id="register-submit" type="submit" variant="primary" class="w-full mt-6">
